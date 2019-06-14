@@ -118,9 +118,16 @@ contract PatronageCollectibles is ERC721Full {
   function _reclaim(uint tokenId) internal {
     require(canReclaim(tokenId), "Cannot reclaim token.");
 
-    // TODO: change owner
-    // ownerOf[tokenId] = address(0)
+    // Change owner
+    _removeTokenFromOwnerEnumeration(_tokenOwner[tokenId], tokenId);
+    _tokenOwner[tokenId] = address(0); // Unowned
+    _addTokenToOwnerEnumeration(address(0), tokenId);
+
+    // Reset price, tax balance, and taxes owed
     prices[tokenId] = 0;
+    taxes[tokenId] = 0;
+    paidThru[tokenId] = now;
+
     emit Reclaimed(tokenId, msg.sender);
   }
 
