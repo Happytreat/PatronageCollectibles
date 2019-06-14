@@ -4,19 +4,30 @@ import "openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol";
 
 
 contract PatronageCollectibles is ERC721Full {
-  event Minted(uint256 tokenId, address creator);
-  event Deposited(uint256 tokenId, uint256 value, address from);
+  event Minted(uint indexed tokenId, address from);
+  event Deposited(uint indexed tokenId, uint value, address from);
+  event PriceUpdated(uint indexed tokenId, uint newPrice, address from);
 
   // Mapping from creator to list of token IDs
-  mapping(address => uint256[]) private _createdTokens;
+  mapping(address => uint[]) private _createdTokens;
 
   // Who receives taxes from taxes
   mapping(uint => address) private _tokenCreator;
 
   // Harberger Tax variables
   mapping(uint => uint) private _taxes;
+  mapping(uint => uint) private _prices;
 
   constructor () public ERC721Full("Patronage Collectibles", "PAT") {}
+
+  /**
+  * @dev Throws if called by any account other than the owner of a tokenId.
+  */
+  modifier onlyOwnerOf(uint tokenId) {
+      require(exists(tokenId), "Token doesn't exist.");
+      require(ownerOf(tokenId) == msg.sender, "Caller is not the token owner");
+      _;
+  }
 
   /**
     * @dev Function to mint tokens. From ERC721MetadataMintable
@@ -24,7 +35,7 @@ contract PatronageCollectibles is ERC721Full {
     * @param tokenURI The token URI of the minted token.
     * @return A boolean that indicates if the operation was successful.
     */
-  function mint(uint256 tokenId, string memory tokenURI) public returns (bool) {
+  function mint(uint tokenId, string memory tokenURI) public returns (bool) {
       address creator = msg.sender;
 
       _createdTokens[creator].push(tokenId); // Track a Creator's tokens
@@ -38,10 +49,10 @@ contract PatronageCollectibles is ERC721Full {
 
   /**
     * @dev Gets the creator of the specified token ID.
-    * @param tokenId uint256 ID of the token to query the creator of
+    * @param tokenId uint ID of the token to query the creator of
     * @return address currently marked as the creator of the given token ID
     */
-  function creatorOf(uint256 tokenId) public view returns (address) {
+  function creatorOf(uint tokenId) public view returns (address) {
       address creator = _tokenCreator[tokenId];
       require(creator != address(0), "ERC721: creator query for nonexistent token");
 
@@ -49,40 +60,49 @@ contract PatronageCollectibles is ERC721Full {
   }
 
   // Pay taxes
-  // TODO: onlyOwnerOf the token id can deposit?
-  function deposit(uint256 tokenId) public payable {
+  function deposit(uint tokenId) public payable onlyOwnerOf(tokenId) {
     _taxes[tokenId] += msg.value;
     emit Deposited(tokenId, msg.value, msg.sender);
   }
 
+  // Update token price
+  function setPrice(uint tokenId, uint newPrice) public onlyOwnerOf(tokenId) {
+    _prices[tokenId] = newPrice;
+    emit PriceUpdated(tokenId, newPrice, msg.sender);
+  }
+
   // TODO: functions for buy, setPrice, deposit taxes (Wallet Contract?)
-  function taxes(uint256 tokenId) public view returns (uint) {
+  function taxes(uint tokenId) public view returns (uint) {
     return _taxes[tokenId];
   }
 
-  function exists(uint256 tokenId) public view returns (bool) {
+  function price(uint tokenId) public view returns (uint) {
+    return _prices[tokenId];
+  }
+
+  function exists(uint tokenId) public view returns (bool) {
       return _exists(tokenId);
   }
 
-  function tokensOfCreator(address creator) public view returns (uint256[] memory) {
+  function tokensOfCreator(address creator) public view returns (uint[] memory) {
     return _tokensOfCreator(creator);
   }
 
-  function tokensOfOwner(address owner) public view returns (uint256[] memory) {
+  function tokensOfOwner(address owner) public view returns (uint[] memory) {
       return _tokensOfOwner(owner);
   }
 
   // Forbid transfers
-  // function _transferFrom(address from, address to, uint256 tokenId) internal {
+  // function _transferFrom(address from, address to, uint tokenId) internal {
   //   revert('Transfers Disallowed');
   // }
 
   /**
   * @dev Gets the list of token IDs of the requested creator.
   * @param creator address who created the tokens
-  * @return uint256[] List of token IDs owned by the requested address
+  * @return uint[] List of token IDs owned by the requested address
   */
-  function _tokensOfCreator(address creator) internal view returns (uint256[] storage) {
+  function _tokensOfCreator(address creator) internal view returns (uint[] storage) {
       return _createdTokens[creator];
   }
 }

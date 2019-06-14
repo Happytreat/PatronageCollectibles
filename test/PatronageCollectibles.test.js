@@ -1,4 +1,4 @@
-const { assertEvent } = require('./helpers');
+const { assertEvent, expectThrow } = require('./helpers');
 
 const PatronageCollectibles = artifacts.require("PatronageCollectibles.sol");
 
@@ -6,8 +6,9 @@ const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 const TEST_TOKEN_ID = 123;
 const TEST_URI = 'mock://mytoken';
 const TEST_DEPOSIT = 100;
+const TEST_PRICE = 1000;
 
-contract('PatronageCollectibles', ([creator, patron]) => {
+contract('PatronageCollectibles', ([creator, patron, stranger]) => {
   before(async () => {
     this.collectibles = await PatronageCollectibles.new();
   });
@@ -49,7 +50,7 @@ contract('PatronageCollectibles', ([creator, patron]) => {
     assert.equal(createdTokens[0], TEST_TOKEN_ID);
   });
 
-  it('Patrons can deposit taxes and view the balance', async () => {
+  it('Owners can deposit taxes and view the balance', async () => {
     const oldTaxBalance = await this.collectibles.taxes(TEST_TOKEN_ID);
     assert.equal(oldTaxBalance, 0);
 
@@ -65,5 +66,31 @@ contract('PatronageCollectibles', ([creator, patron]) => {
 
     const newTaxBalance = await this.collectibles.taxes(TEST_TOKEN_ID);
     assert.equal(newTaxBalance, TEST_DEPOSIT);
+  });
+
+  it('Non-owners cannot deposit taxes', async () => {
+    await expectThrow(this.collectibles.deposit(TEST_TOKEN_ID, { from: stranger, value: TEST_DEPOSIT }));
+  });
+
+  it('Owners can set the price of their token', async () => {
+    const oldPrice = await this.collectibles.price(TEST_TOKEN_ID);
+    assert.equal(oldPrice, 0);
+
+    const result = await this.collectibles.setPrice(TEST_TOKEN_ID, TEST_PRICE, { from: creator });
+    assertEvent(result, {
+      event: 'PriceUpdated',
+      args: {
+        from: creator,
+        newPrice: TEST_PRICE,
+        tokenId: TEST_TOKEN_ID,
+      },
+    }, 'A PriceUpdated event is emitted.');
+
+    const newPrice = await this.collectibles.price(TEST_TOKEN_ID);
+    assert.equal(newPrice, TEST_PRICE);
+  });
+
+  it('Non-owners cannot set prices', async () => {
+    await expectThrow(this.collectibles.setPrice(TEST_TOKEN_ID, TEST_PRICE, { from: stranger }));
   });
 });
