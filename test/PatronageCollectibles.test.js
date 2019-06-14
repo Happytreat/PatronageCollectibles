@@ -1,4 +1,4 @@
-const { assertEvent, expectThrow } = require('./helpers');
+const { assertEvent, expectThrow, timeTravel } = require('./helpers');
 
 const PatronageCollectibles = artifacts.require("PatronageCollectibles.sol");
 
@@ -7,6 +7,7 @@ const TEST_TOKEN_ID = 123;
 const TEST_URI = 'mock://mytoken';
 const TEST_DEPOSIT = 100;
 const TEST_PRICE = 1000;
+const SECONDS_IN_A_DAY = 86400;
 
 contract('PatronageCollectibles', ([creator, patron, stranger]) => {
   before(async () => {
@@ -94,13 +95,10 @@ contract('PatronageCollectibles', ([creator, patron, stranger]) => {
     await expectThrow(this.collectibles.setPrice(TEST_TOKEN_ID, TEST_PRICE, { from: stranger }));
   });
 
-  // it('taxes are due over time', async () => {
-  //   const taxWindow = await this.patrons.taxWindow();
-  //   assert.equal(taxWindow, SECONDS_IN_A_DAY);
+  it('taxes are due over time', async () => {
+    await timeTravel(SECONDS_IN_A_DAY * 1); // Wait 24 hours
 
-  //   await timeTravel(SECONDS_IN_A_DAY * 1); // Wait 1 day
-
-  //   const taxes = await this.patrons.taxesDue(PATRONAGE_ID);
-  //   assert.equal(taxes.toNumber(), 1); // Tax is 1% per day
-  // });  
+    const taxes = await this.collectibles.taxOwed(TEST_TOKEN_ID);
+    assert.equal(taxes.toString(), "240"); // Tax is 1% * 24 per day off 1000
+  });  
 });

@@ -8,7 +8,9 @@ contract PatronageCollectibles is ERC721Full {
   event Deposited(uint indexed tokenId, uint value, address from);
   event PriceUpdated(uint indexed tokenId, uint newPrice, address from);
 
-  uint32 private constant MAX_TAX_DENOMINATOR = 100;
+  uint32 private constant TAX_DENOMINATOR = 1000000;
+  uint32 private constant TAX_NUMERATOR = 10000; // 1%, make configurable
+  uint32 private constant TAX_INTERVAL = 1 hours;
 
   // Mapping from creator to list of token IDs
   mapping(address => uint[]) private _createdTokens;
@@ -20,8 +22,6 @@ contract PatronageCollectibles is ERC721Full {
   // TODO: make into struct?
   mapping(uint => uint) public taxes;
   mapping(uint => uint) public prices;
-  mapping(uint => uint) public taxRates; // HTax rate
-  mapping(uint => uint) public taxIntervals;
   mapping(uint => uint) public paidThru;
 
   constructor () public ERC721Full("Patronage Collectibles", "PAT") {}
@@ -50,7 +50,6 @@ contract PatronageCollectibles is ERC721Full {
       // HTax parameters
       prices[tokenId] = 0;
       taxes[tokenId] = 0;
-      taxRates[tokenId] = 5; // 5%
       paidThru[tokenId] = now;
 
       _mint(creator, tokenId); // Initially, the creator owns the token but is 'in recovery'
@@ -59,6 +58,10 @@ contract PatronageCollectibles is ERC721Full {
       emit Minted(tokenId, creator);
       return true;
   }
+
+  // TODO: buy
+
+  // TODO: collect taxes
 
   // Pay taxes
   function deposit(uint tokenId) public payable onlyOwnerOf(tokenId) {
@@ -72,14 +75,12 @@ contract PatronageCollectibles is ERC721Full {
     emit PriceUpdated(tokenId, newPrice, msg.sender);
   }
 
-  function taxDue(uint tokenId) public view returns (uint) {
+  function taxOwed(uint tokenId) public view returns (uint) {
     uint tokenPrice = prices[tokenId];
 
-    return tokenPrice * (now - paidThru[tokenId]) * taxRates[tokenId]
-        / MAX_TAX_DENOMINATOR / 1 hours;
+    return tokenPrice * (now - paidThru[tokenId]) * TAX_NUMERATOR
+        / TAX_DENOMINATOR / TAX_INTERVAL;
   }
-
-  // TODO: functions for buy, setPrice, deposit taxes (Wallet Contract?)
 
   function exists(uint tokenId) public view returns (bool) {
       return _exists(tokenId);
