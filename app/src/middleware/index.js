@@ -15,7 +15,6 @@ const contractEventNotifier = store => next => action => {
   return next(action)
 }
 
-
 const appMiddlewares = [ contractEventNotifier ]
 
 const store = generateStore({

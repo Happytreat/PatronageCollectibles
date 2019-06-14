@@ -58,6 +58,11 @@ contract PatronageCollectibles is ERC721Full {
       return _tokensOfOwner(owner);
   }
 
+  // Forbid transfers
+  function _transferFrom(address from, address to, uint256 tokenId) internal {
+    revert('Transfers Disallowed');
+  }
+
   /**
   * @dev Gets the list of token IDs of the requested creator.
   * @param creator address who created the tokens
