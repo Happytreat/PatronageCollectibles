@@ -6,11 +6,11 @@ const mapStateToProps = state => ({
   SimpleStorage: state.contracts.SimpleStorage,
   TutorialToken: state.contracts.TutorialToken,
   drizzleStatus: state.drizzleStatus
-})
+});
 
 const MyContainer = drizzleConnect(
   MyComponent,
   mapStateToProps
-)
+);
 
-export default MyContainer
+export default MyContainer;

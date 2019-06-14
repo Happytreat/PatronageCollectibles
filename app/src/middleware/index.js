@@ -13,7 +13,7 @@ const contractEventNotifier = store => next => action => {
     toast.success(display, { position: toast.POSITION.TOP_RIGHT })
   }
   return next(action)
-}
+};
 
 const appMiddlewares = [ contractEventNotifier ]
 

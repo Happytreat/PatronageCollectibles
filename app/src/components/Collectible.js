@@ -41,7 +41,7 @@ Claim.contextTypes = {
   drizzle: PropTypes.object,
 };
 Claim.propTypes = {
-  tokenID: PropTypes.integer,
+  tokenID: PropTypes.number,
   contracts: PropTypes.object, // eslint-disable-line
 };
 Claim.defaultProps = {

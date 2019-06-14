@@ -1,62 +1,47 @@
 import React, { Component } from "react";
-import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import {
-  ContractData,
-  ContractForm,
-  Collectible,
-} from "./components";
 
-import logo from "./logo.png";
+import { Tabs } from 'antd';
+import 'antd/dist/antd.css';
+import CreatorAdmin from './pages/CreatorAdmin';
+import Profile from './pages/Profile';
+// import withStyles from "@material-ui/core/styles/withStyles";
+
+const { TabPane } = Tabs;
+//
+// const styles = theme => ({
+//     wrapper: {section
+//         backgroundColor: '#0667d0',
+//         width: '100%',
+//         padding: theme.spacing.unit,
+//         [theme.breakpoints.up('md')]: {
+//             padding: theme.spacing.unit * 2,
+//         },
+//     },
+// });
+
+function callback(key) {
+    console.log(key);
+}
 
 class MyComponent extends Component {
   render() {
-    return (
-      <div className="App">
-        <ToastContainer />
-        <div>
-          <img src={logo} alt="drizzle-logo" />
-          <h1>Drizzle Event Example</h1>
-          <p>Connect and react to Solidity Contract events by hooking into Drizzle Redux state</p>
-
-          <strong>Connected as {this.props.accounts[0]}</strong>
-        </div>
-    
-        <section>
-          <h2>SimpleStorage with event</h2>
-          <p>
-            <strong>Stored Value: </strong>
-            <ContractData contract="SimpleStorage" method="storedData" />
-          </p>
-          <ContractForm contract="SimpleStorage" method="set" />
-        </section>
-    
-        <section>
-          <h2>Patronage Collectibles</h2>
-          <strong>My tokens: </strong>
-          <ContractData contract="PatronageCollectibles" method="balanceOf" methodArgs={[this.props.accounts[0]]} />
-
-          <br />
-
-          <strong>Tokens I created: </strong>
-          <ContractData contract="PatronageCollectibles" method="tokensOfCreator" methodArgs={[this.props.accounts[0]]} />
-
-          <br />
-
-          <strong>Tokens I own: </strong>
-          <ContractData contract="PatronageCollectibles" method="tokensOfOwner" methodArgs={[this.props.accounts[0]]} />          
-
-          <br />
-
-          <strong>Mint new token: </strong>
-          <ContractForm contract="PatronageCollectibles" method="mint" />
-        </section>
-
-        <section>
-          <Collectible tokenID={123} />
-        </section>
-      </div>
-    );
+    //console.log(this.props);
+      return (
+          <div style={{padding: '10px', leftMargin: '50px', fontFamily: 'Helvetica'}}>
+              <Tabs defaultActiveKey="1" onChange={callback} tabPosition="top" tabBarGutter>
+                  <TabPane tab="My Profile" key="1">
+                      <Profile/>
+                  </TabPane>
+                  <TabPane tab="Creator Dashboard" key="2">
+                      <CreatorAdmin accounts={this.props.accounts}/>
+                  </TabPane>
+                  <TabPane tab="View Other Creators" key="3">
+                      Content of Tab Pane 2
+                  </TabPane>
+              </Tabs>
+          </div>
+      )
   }
 }
 
