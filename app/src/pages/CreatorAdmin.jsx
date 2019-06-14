@@ -28,7 +28,7 @@ export default ({ accounts }) => (
 
               <Divider />
               <Tabs defaultActiveKey="1" tabPosition="top" tabBarGutter>
-                <TabPane tab="Collectibles I own" key="1" align="center">
+                <TabPane tab="Collectibles I minted" key="1" align="center">
                   <CollectiblesTable account={accounts[0]}/>
                 </TabPane>
                 <TabPane tab="Mint Collectibles" key="2" align="center">
