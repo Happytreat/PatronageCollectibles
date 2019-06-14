@@ -4,6 +4,8 @@ import "openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol";
 
 
 contract PatronageCollectibles is ERC721Full {
+  event Minted(uint256 _tokenId, address _creator);
+
   // Mapping from creator to list of token IDs
   mapping(address => uint256[]) private _createdTokens;
 
@@ -25,6 +27,8 @@ contract PatronageCollectibles is ERC721Full {
       _tokenCreator[tokenId] = creator;
       _mint(creator, tokenId); // Initially, the creator owns the token but is 'in recovery'
       _setTokenURI(tokenId, tokenURI);
+
+      emit Minted(tokenId, creator);
       return true;
   }
 

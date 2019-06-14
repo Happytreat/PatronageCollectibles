@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import {
@@ -8,23 +8,41 @@ import {
 
 import logo from "./logo.png";
 
-export default () => (
-  <div className="App">
-    <ToastContainer />
-    <div>
-      <img src={logo} alt="drizzle-logo" />
-      <h1>Drizzle Event Example</h1>
-      <p>Connect and react to Solidity Contract events by hooking into Drizzle Redux state</p>
-    </div>
+class MyComponent extends Component {
+  render() {
+    return (
+      <div className="App">
+        <ToastContainer />
+        <div>
+          <img src={logo} alt="drizzle-logo" />
+          <h1>Drizzle Event Example</h1>
+          <p>Connect and react to Solidity Contract events by hooking into Drizzle Redux state</p>
 
-    <div className="section">
-      <h2>SimpleStorage with event</h2>
-      <p>Change the value to invoke a contract event</p>
-      <p>
-        <strong>Stored Value: </strong>
-        <ContractData contract="SimpleStorage" method="storedData" />
-      </p>
-      <ContractForm contract="SimpleStorage" method="set" />
-    </div>
-  </div>
-);
+          <strong>Connected as {this.props.accounts[0]}</strong>
+        </div>
+    
+        <div className="section">
+          <h2>SimpleStorage with event</h2>
+          <p>
+            <strong>Stored Value: </strong>
+            <ContractData contract="SimpleStorage" method="storedData" />
+          </p>
+          <ContractForm contract="SimpleStorage" method="set" />
+        </div>
+    
+        <div className="section">
+          <h2>Patronage Collectibles</h2>
+          <strong>My tokens: </strong>
+          <ContractData contract="PatronageCollectibles" method="balanceOf" methodArgs={[this.props.accounts[0]]} />
+
+          <br />
+
+          <strong>Mint new token: </strong>
+          <ContractForm contract="PatronageCollectibles" method="mint" />
+        </div>
+      </div>
+    );
+  }
+}
+
+export default MyComponent;
