@@ -106,5 +106,11 @@ contract('PatronageCollectibles', ([creator, patron, stranger]) => {
 
     const canReclaim = await this.collectibles.canReclaim(TEST_TOKEN_ID);
     assert.equal(canReclaim, true);
-  });  
+  });
+
+  // TODO: test collect
+
+  // TODO: test reclaim
+
+  // TODO: test buy
 });

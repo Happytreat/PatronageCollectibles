@@ -7,7 +7,9 @@ contract PatronageCollectibles is ERC721Full {
   event Minted(uint indexed tokenId, address from);
   event Deposited(uint indexed tokenId, uint value, address from);
   event PriceUpdated(uint indexed tokenId, uint newPrice, address from);
+  event Collected(uint indexed tokenId, uint taxAmount, address from);
   event Reclaimed(uint indexed tokenId, address from);
+  event Bought(uint indexed tokenId, uint latestPrice, address from);
 
   uint32 private constant TAX_DENOMINATOR = 1000000;
   uint32 private constant TAX_NUMERATOR = 10000; // 1%, make configurable
@@ -60,18 +62,73 @@ contract PatronageCollectibles is ERC721Full {
       return true;
   }
 
-  // TODO: buy 
+  // TODO: buy
+  function buy(uint tokenId) public payable { // TODO: must be nonreentrant
+    uint paidAmount = msg.value;
+    
+    collect(tokenId); // Collect taxes
+    reclaim(tokenId); // Reclaim if possible to lower price to 0
 
-  // TODO: collect taxes
+    uint latestPrice = prices[tokenId];
+    require(paidAmount >= latestPrice, 'Insufficient amount paid.');
+
+    address payable previousOwner = address(uint160(_tokenOwner[tokenId]));
+    require(msg.sender != previousOwner, 'You are already the owner.');
+    uint excessTaxes = taxes[tokenId]; // Refund excess taxes to previous owner
+
+    // Change owner
+    address newOwner = msg.sender;
+    uint excessPaidAmount = paidAmount - latestPrice; // TODO: use SafeMath.sub()
+    prices[tokenId] = 0;
+    taxes[tokenId] = excessPaidAmount; // Excess paid is deposited as taxes
+    paidThru[tokenId] = now;
+    _changeOwner(tokenId, previousOwner, newOwner); // Unowned
+
+    uint refund = excessTaxes + latestPrice; // TODO: SafeMath
+    emit Bought(tokenId, latestPrice, newOwner);
+    previousOwner.transfer(refund); // Transfer remaining taxes + profit to previous owner
+  }
+
+  // Collect taxes
   function collect(uint tokenId) public {
-    // TODO: 
+    uint owed = taxOwed(tokenId);
+    address payable beneficiary = address(uint160(creatorOf(tokenId)));
+    uint balance = taxes[tokenId];
 
+    if (owed > balance) { // insufficient tax deposited
+      paidThru[tokenId] += (now - paidThru[tokenId]) * balance / owed;
+      emit Collected(tokenId, balance, msg.sender);
+      beneficiary.transfer(balance);
+    } else { // enough tax deposited
+      paidThru[tokenId] = now;
+      emit Collected(tokenId, owed, msg.sender);
+      beneficiary.transfer(owed); // Pay creator
+    }
+  }
+
+  // Reclaim tokens if taxes are underpaid
+  function reclaim(uint tokenId) public returns (bool) {
+    if(!canReclaim(tokenId)) {
+      return false;
+    } else {
+      _changeOwner(tokenId, _tokenOwner[tokenId], address(0)); // Unowned
+
+      // Reset price, tax balance, and taxes owed
+      prices[tokenId] = 0;
+      taxes[tokenId] = 0;
+      paidThru[tokenId] = now;
+
+      emit Reclaimed(tokenId, msg.sender);
+    }
   }
 
   // Pay taxes
   function deposit(uint tokenId) public payable onlyOwnerOf(tokenId) {
-    taxes[tokenId] += msg.value;
-    emit Deposited(tokenId, msg.value, msg.sender);
+    uint amount = msg.value;
+
+    require(taxOwed(tokenId) <= amount, 'Must deposit enough taxes to cover unpaid.');
+    taxes[tokenId] += amount;
+    emit Deposited(tokenId, amount, msg.sender);
   }
 
   // Update token price
@@ -115,20 +172,10 @@ contract PatronageCollectibles is ERC721Full {
       return (prices[tokenId] > 0 && taxOwed(tokenId) > taxes[tokenId]);
   }
 
-  function _reclaim(uint tokenId) internal {
-    require(canReclaim(tokenId), "Cannot reclaim token.");
-
-    // Change owner
-    _removeTokenFromOwnerEnumeration(_tokenOwner[tokenId], tokenId);
-    _tokenOwner[tokenId] = address(0); // Unowned
-    _addTokenToOwnerEnumeration(address(0), tokenId);
-
-    // Reset price, tax balance, and taxes owed
-    prices[tokenId] = 0;
-    taxes[tokenId] = 0;
-    paidThru[tokenId] = now;
-
-    emit Reclaimed(tokenId, msg.sender);
+  function _changeOwner(uint tokenId, address oldOwner, address newOwner) internal {
+    _removeTokenFromOwnerEnumeration(oldOwner, tokenId);
+    _tokenOwner[tokenId] = newOwner;
+    _addTokenToOwnerEnumeration(newOwner, tokenId);
   }
 
   /**
