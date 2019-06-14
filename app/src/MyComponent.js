@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import {
   ContractData,
   ContractForm,
-} from "drizzle-react-components";
+} from "./components";
 
 import logo from "./logo.png";
 
@@ -34,6 +34,16 @@ class MyComponent extends Component {
           <h2>Patronage Collectibles</h2>
           <strong>My tokens: </strong>
           <ContractData contract="PatronageCollectibles" method="balanceOf" methodArgs={[this.props.accounts[0]]} />
+
+          <br />
+
+          <strong>Tokens I created: </strong>
+          <ContractData contract="PatronageCollectibles" method="tokensOfCreator" methodArgs={[this.props.accounts[0]]} />
+
+          <br />
+
+          <strong>Tokens I own: </strong>
+          <ContractData contract="PatronageCollectibles" method="tokensOfOwner" methodArgs={[this.props.accounts[0]]} />          
 
           <br />
 
