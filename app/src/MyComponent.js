@@ -7,8 +7,13 @@ import {
 } from "drizzle-react-components";
 
 import logo from "./logo.png";
-import PaddedPaper from "./atoms/PaddedPaper/PaddedPaper";
-import withStyles from "@material-ui/core/styles/withStyles";
+import { Tabs } from 'antd';
+import 'antd/dist/antd.css';
+import CreatorAdmin from './pages/CreatorAdmin';
+import Profile from './pages/Profile';
+// import withStyles from "@material-ui/core/styles/withStyles";
+
+const { TabPane } = Tabs;
 
 const styles = theme => ({
     wrapper: {
@@ -21,27 +26,32 @@ const styles = theme => ({
     },
 });
 
-const MyComponent =  () => (
-  <div className="App" style={{backgroundColor: '#0667d0'}}>
-    <ToastContainer />
-    <div>
-      <PaddedPaper>
-          <img src={logo} alt="drizzle-logo" />
-          <h1>Drizzle Event Example</h1>
-          <p>Connect and react to Solidity Contract events by hooking into Drizzle Redux state</p>
-      </PaddedPaper>
-    </div>
+function callback(key) {
+    console.log(key);
+}
 
-    <div className="section">
-      <h2>SimpleStorage with event</h2>
-      <p>Change the value to invoke a contract event</p>
-      <p>
-        <strong>Stored Value: </strong>
-        <ContractData contract="SimpleStorage" method="storedData" />
-      </p>
-      <ContractForm contract="SimpleStorage" method="set" />
+const Logo = () => {
+  return (
+    <div>
+      <img src={logo} alt="drizzle-logo" />
     </div>
-  </div>
+  )
+};
+
+const MyComponent =  () => (
+    <div style={{ padding: '10px', leftMargin: '50px', fontFamily: 'Helvetica'}}>
+        <Tabs defaultActiveKey="1" onChange={callback} tabPosition="top" tabBarGutter tabBarExtraContent={Logo}>
+            <TabPane tab="My Profile" key="1">
+              <Profile />
+            </TabPane>
+            <TabPane tab="Creator Admin" key="2">
+                <CreatorAdmin />
+            </TabPane>
+            <TabPane tab="Creator Dashboard" key="3">
+                Content of Tab Pane 2
+            </TabPane>
+        </Tabs>
+    </div>
 );
 
 export default MyComponent;
