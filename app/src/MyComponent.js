@@ -4,7 +4,10 @@ import 'react-toastify/dist/ReactToastify.css'
 import { Tabs } from 'antd';
 import 'antd/dist/antd.css';
 import CreatorAdmin from './pages/CreatorAdmin';
+import Patron from './pages/Patron';
 import Profile from './pages/Profile';
+import PublicCreators from './pages/PublicCreators';
+
 // import withStyles from "@material-ui/core/styles/withStyles";
 
 const { TabPane } = Tabs;
@@ -36,8 +39,11 @@ class MyComponent extends Component {
                   <TabPane tab="Creator Dashboard" key="2">
                       <CreatorAdmin accounts={this.props.accounts}/>
                   </TabPane>
-                  <TabPane tab="View Other Creators" key="3">
-                      Content of Tab Pane 2
+                  <TabPane tab="My Collectibles" key="3">
+                    <Patron accounts={this.props.accounts}/>
+                  </TabPane>
+                  <TabPane tab="Explore Creators" key="4">
+                      <PublicCreators />
                   </TabPane>
               </Tabs>
           </div>
