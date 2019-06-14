@@ -4,13 +4,17 @@ import "openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol";
 
 
 contract PatronageCollectibles is ERC721Full {
-  event Minted(uint256 _tokenId, address _creator);
+  event Minted(uint256 tokenId, address creator);
+  event Deposited(uint256 tokenId, uint256 value, address from);
 
   // Mapping from creator to list of token IDs
   mapping(address => uint256[]) private _createdTokens;
 
   // Who receives taxes from taxes
   mapping(uint => address) private _tokenCreator;
+
+  // Harberger Tax variables
+  mapping(uint => uint) private _taxes;
 
   constructor () public ERC721Full("Patronage Collectibles", "PAT") {}
 
@@ -32,8 +36,6 @@ contract PatronageCollectibles is ERC721Full {
       return true;
   }
 
-  // TODO: functions for buy, setPrice, deposit taxes (Wallet Contract?)
-
   /**
     * @dev Gets the creator of the specified token ID.
     * @param tokenId uint256 ID of the token to query the creator of
@@ -44,6 +46,18 @@ contract PatronageCollectibles is ERC721Full {
       require(creator != address(0), "ERC721: creator query for nonexistent token");
 
       return creator;
+  }
+
+  // Pay taxes
+  // TODO: onlyOwnerOf the token id can deposit?
+  function deposit(uint256 tokenId) public payable {
+    _taxes[tokenId] += msg.value;
+    emit Deposited(tokenId, msg.value, msg.sender);
+  }
+
+  // TODO: functions for buy, setPrice, deposit taxes (Wallet Contract?)
+  function taxes(uint256 tokenId) public view returns (uint) {
+    return _taxes[tokenId];
   }
 
   function exists(uint256 tokenId) public view returns (bool) {
@@ -59,9 +73,9 @@ contract PatronageCollectibles is ERC721Full {
   }
 
   // Forbid transfers
-  function _transferFrom(address from, address to, uint256 tokenId) internal {
-    revert('Transfers Disallowed');
-  }
+  // function _transferFrom(address from, address to, uint256 tokenId) internal {
+  //   revert('Transfers Disallowed');
+  // }
 
   /**
   * @dev Gets the list of token IDs of the requested creator.
