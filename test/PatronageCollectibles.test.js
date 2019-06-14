@@ -101,16 +101,64 @@ contract('PatronageCollectibles', ([creator, patron, stranger]) => {
 
     await timeTravel(SECONDS_IN_A_DAY * 1); // Wait 24 hours
 
-    const taxes = await this.collectibles.taxOwed(TEST_TOKEN_ID);
-    assert.equal(taxes.toString(), "240"); // Tax is 1% * 24 per day off 1000
+    const taxOwed = await this.collectibles.taxOwed(TEST_TOKEN_ID);
+    assert.equal(taxOwed.toString(), "240"); // Tax is 1% * 24 per day off 1000
 
     const canReclaim = await this.collectibles.canReclaim(TEST_TOKEN_ID);
     assert.equal(canReclaim, true);
   });
 
-  // TODO: test collect
+  it('can collect taxes', async () => {
+    const oldBalance = await web3.eth.getBalance(creator);
 
-  // TODO: test reclaim
+    const taxBalance = await this.collectibles.taxes(TEST_TOKEN_ID);
+    assert.equal(taxBalance, 100);
+
+    const taxOwed = await this.collectibles.taxOwed(TEST_TOKEN_ID);
+    assert.equal(taxOwed, 240);
+
+    const taxAmount = taxBalance;
+    
+    const result = await this.collectibles.collect(TEST_TOKEN_ID);
+    assertEvent(result, {
+      event: 'Collected',
+      args: {
+        tokenId: TEST_TOKEN_ID,
+        taxAmount: taxAmount.toNumber(),
+        from: creator,
+      },
+    }, 'A Collected event is emitted.');
+
+    // check remaining tax owed
+    const newTaxOwed = await this.collectibles.taxOwed(TEST_TOKEN_ID);
+    assert.equal(newTaxOwed, (240 - taxAmount));
+
+    const canReclaim = await this.collectibles.canReclaim(TEST_TOKEN_ID);
+    assert.equal(canReclaim, true);
+  });
+
+  it('can reclaim underpaid tokens', async () => {
+    const canReclaim = await this.collectibles.canReclaim(TEST_TOKEN_ID);
+    assert.equal(canReclaim, true);
+
+    const result = await this.collectibles.reclaim(TEST_TOKEN_ID, { from: stranger });
+    assertEvent(result, {
+      event: 'Reclaimed',
+      args: {
+        tokenId: TEST_TOKEN_ID,
+        from: stranger,
+      },
+    }, 'A Reclaimed event is emitted.');
+
+    const newOwner = await this.collectibles.ownerOf(TEST_TOKEN_ID);
+    assert.equal(newOwner, ZERO_ADDRESS);
+
+    const newTaxOwed = await this.collectibles.taxOwed(TEST_TOKEN_ID);
+    assert.equal(newTaxOwed, 0);
+
+    const newPrice = await this.collectibles.prices(TEST_TOKEN_ID);
+    assert.equal(newPrice, 0);
+  });
 
   // TODO: test buy
 });

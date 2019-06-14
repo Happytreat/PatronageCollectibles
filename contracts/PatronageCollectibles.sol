@@ -8,8 +8,8 @@ contract PatronageCollectibles is ERC721Full {
   event Deposited(uint indexed tokenId, uint value, address from);
   event PriceUpdated(uint indexed tokenId, uint newPrice, address from);
   event Collected(uint indexed tokenId, uint taxAmount, address from);
-  event Reclaimed(uint indexed tokenId, address from);
   event Bought(uint indexed tokenId, uint latestPrice, address from);
+  event Reclaimed(uint indexed tokenId, address from);
 
   uint32 private constant TAX_DENOMINATOR = 1000000;
   uint32 private constant TAX_NUMERATOR = 10000; // 1%, make configurable
@@ -62,7 +62,7 @@ contract PatronageCollectibles is ERC721Full {
       return true;
   }
 
-  // TODO: buy
+  // Buys a Collectible
   function buy(uint tokenId) public payable { // TODO: must be nonreentrant
     uint paidAmount = msg.value;
     
@@ -107,10 +107,8 @@ contract PatronageCollectibles is ERC721Full {
   }
 
   // Reclaim tokens if taxes are underpaid
-  function reclaim(uint tokenId) public returns (bool) {
-    if(!canReclaim(tokenId)) {
-      return false;
-    } else {
+  function reclaim(uint tokenId) public {
+    if(canReclaim(tokenId)) {
       _changeOwner(tokenId, _tokenOwner[tokenId], address(0)); // Unowned
 
       // Reset price, tax balance, and taxes owed
@@ -169,7 +167,7 @@ contract PatronageCollectibles is ERC721Full {
   }
 
   function canReclaim(uint tokenId) public view returns (bool) {
-      return (prices[tokenId] > 0 && taxOwed(tokenId) > taxes[tokenId]);
+      return (ownerOf(tokenId) != address(0) && prices[tokenId] > 0 && taxOwed(tokenId) > taxes[tokenId]);
   }
 
   function _changeOwner(uint tokenId, address oldOwner, address newOwner) internal {

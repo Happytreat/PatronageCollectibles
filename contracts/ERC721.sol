@@ -66,10 +66,7 @@ contract ERC721 is ERC165, IERC721 {
      * @return address currently marked as the owner of the given token ID
      */
     function ownerOf(uint256 tokenId) public view returns (address) {
-        address owner = _tokenOwner[tokenId];
-        require(owner != address(0), "ERC721: owner query for nonexistent token");
-
-        return owner;
+        return _tokenOwner[tokenId];
     }
 
     /**
