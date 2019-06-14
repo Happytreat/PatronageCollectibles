@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import {
   ContractData,
   ContractForm,
+  Collectible,
 } from "./components";
 
 import logo from "./logo.png";
@@ -21,16 +22,16 @@ class MyComponent extends Component {
           <strong>Connected as {this.props.accounts[0]}</strong>
         </div>
     
-        <div className="section">
+        <section>
           <h2>SimpleStorage with event</h2>
           <p>
             <strong>Stored Value: </strong>
             <ContractData contract="SimpleStorage" method="storedData" />
           </p>
           <ContractForm contract="SimpleStorage" method="set" />
-        </div>
+        </section>
     
-        <div className="section">
+        <section>
           <h2>Patronage Collectibles</h2>
           <strong>My tokens: </strong>
           <ContractData contract="PatronageCollectibles" method="balanceOf" methodArgs={[this.props.accounts[0]]} />
@@ -49,7 +50,11 @@ class MyComponent extends Component {
 
           <strong>Mint new token: </strong>
           <ContractForm contract="PatronageCollectibles" method="mint" />
-        </div>
+        </section>
+
+        <section>
+          <Collectible tokenID={123} />
+        </section>
       </div>
     );
   }
