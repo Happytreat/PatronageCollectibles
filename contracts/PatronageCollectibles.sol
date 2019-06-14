@@ -1,12 +1,13 @@
-pragma solidity ^0.5.4;
+pragma solidity 0.5.4;
 
-import "openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol";
+import "./ERC721Full.sol";
 
 
 contract PatronageCollectibles is ERC721Full {
   event Minted(uint indexed tokenId, address from);
   event Deposited(uint indexed tokenId, uint value, address from);
   event PriceUpdated(uint indexed tokenId, uint newPrice, address from);
+  event Reclaimed(uint indexed tokenId, address from);
 
   uint32 private constant TAX_DENOMINATOR = 1000000;
   uint32 private constant TAX_NUMERATOR = 10000; // 1%, make configurable
@@ -110,13 +111,17 @@ contract PatronageCollectibles is ERC721Full {
       return creator;
   }
 
-  // TODO: Forbid transfers
-  // function _transferFrom(address from, address to, uint tokenId) internal {
-  //   revert('Transfers Disallowed');
-  // }
-
   function canReclaim(uint tokenId) public view returns (bool) {
       return (prices[tokenId] > 0 && taxOwed(tokenId) > taxes[tokenId]);
+  }
+
+  function _reclaim(uint tokenId) internal {
+    require(canReclaim(tokenId), "Cannot reclaim token.");
+
+    // TODO: change owner
+    // ownerOf[tokenId] = address(0)
+    prices[tokenId] = 0;
+    emit Reclaimed(tokenId, msg.sender);
   }
 
   /**
