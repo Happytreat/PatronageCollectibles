@@ -36,7 +36,7 @@ npm install
 truffle migrate
 
 cd app/
-npm install
+yarn
 npm run start
 ```
 
