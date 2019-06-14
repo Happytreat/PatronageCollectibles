@@ -1,33 +1,47 @@
 import React from "react";
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import logo from "../logo.png";
-import { PageHeader } from 'antd';
+import Mint from '../assets/images/mintcoins.svg';
+import { PageHeader, Typography, Divider, Tabs } from 'antd';
 import PaddedPaper from "../atoms/PaddedPaper/PaddedPaper";
-import {ContractData, ContractForm} from "drizzle-react-components";
+import { ContractData, ContractForm } from "drizzle-react-components";
+import {Collectible} from "../components";
+import { contract } from '../const/contract';
+import CollectiblesTable from "../components/CollectiblesTable";
+import MintForm from "../components/MintForm";
+import Profile from "./Profile";
 
-export default () => (
+const { Title, Paragraph, Text, Tag } = Typography;
+const { TabPane } = Tabs;
+
+export default ({ accounts }) => (
     <div>
         <PageHeader onBack={() => null} title="Manage your creator settings" style={{ padding: '10px', leftMargin: '50px', color: '#0667d0' }} />
         <div className="App" style={{backgroundColor: '#0667d0', width: '95%'}}>
             <ToastContainer />
-            <div>
-                <PaddedPaper>
-                    <img src={logo} alt="drizzle-logo" />
-                    <h1>Drizzle Event Example</h1>
-                    <p>Connect and react to Solidity Contract events by hooking into Drizzle Redux state</p>
-                </PaddedPaper>
-            </div>
+            <PaddedPaper>
+              <img src={Mint} alt="Minting coins" style={{ height: '400px', width: '400px' }}/>
+              <Typography>
+                <Title>Creator Dashboard</Title>
+                <Paragraph>Mint and sell unique collectibles here.</Paragraph>
+              </Typography>
 
-            <div className="section">
-                <h2>SimpleStorage with event</h2>
-                <p>Change the value to invoke a contract event</p>
-                <p>
-                    <strong>Stored Value: </strong>
-                    <ContractData contract="SimpleStorage" method="storedData" />
-                </p>
-                <ContractForm contract="SimpleStorage" method="set" />
-            </div>
+              <Divider />
+              <Tabs defaultActiveKey="1" tabPosition="top" tabBarGutter>
+                <TabPane tab="Collectibles I own" key="1" align="center">
+                  <CollectiblesTable account={accounts[0]}/>
+                </TabPane>
+                <TabPane tab="Mint Collectibles" key="2" align="center">
+                  <strong>Mint a new collectible: </strong>
+
+                  <br />
+                  <br />
+                  <div style={{width: '600px', margin: 'auto', paddingTop: '5px'}}>
+                    <MintForm contract={contract} method="mint" />
+                  </div>
+                </TabPane>
+              </Tabs>
+            </PaddedPaper>
         </div>
     </div>
 );

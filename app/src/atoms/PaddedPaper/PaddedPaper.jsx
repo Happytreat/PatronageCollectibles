@@ -13,7 +13,7 @@ const styles = theme => ({
     },
   },
   paper: {
-    width: '95%',
+    width: '100%',
     overflowX: 'auto',
     padding: theme.spacing.unit * 2,
     borderRadius: '15px',
