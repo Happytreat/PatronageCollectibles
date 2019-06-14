@@ -96,9 +96,15 @@ contract('PatronageCollectibles', ([creator, patron, stranger]) => {
   });
 
   it('taxes are due over time', async () => {
+    const canReclaimBefore = await this.collectibles.canReclaim(TEST_TOKEN_ID);
+    assert.equal(canReclaimBefore, false);
+
     await timeTravel(SECONDS_IN_A_DAY * 1); // Wait 24 hours
 
     const taxes = await this.collectibles.taxOwed(TEST_TOKEN_ID);
     assert.equal(taxes.toString(), "240"); // Tax is 1% * 24 per day off 1000
+
+    const canReclaim = await this.collectibles.canReclaim(TEST_TOKEN_ID);
+    assert.equal(canReclaim, true);
   });  
 });

@@ -59,9 +59,13 @@ contract PatronageCollectibles is ERC721Full {
       return true;
   }
 
-  // TODO: buy
+  // TODO: buy 
 
   // TODO: collect taxes
+  function collect(uint tokenId) public {
+    // TODO: 
+
+  }
 
   // Pay taxes
   function deposit(uint tokenId) public payable onlyOwnerOf(tokenId) {
@@ -110,6 +114,10 @@ contract PatronageCollectibles is ERC721Full {
   // function _transferFrom(address from, address to, uint tokenId) internal {
   //   revert('Transfers Disallowed');
   // }
+
+  function canReclaim(uint tokenId) public view returns (bool) {
+      return (prices[tokenId] > 0 && taxOwed(tokenId) > taxes[tokenId]);
+  }
 
   /**
   * @dev Gets the list of token IDs of the requested creator.
