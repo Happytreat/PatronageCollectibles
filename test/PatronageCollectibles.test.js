@@ -73,7 +73,7 @@ contract('PatronageCollectibles', ([creator, patron, stranger]) => {
   });
 
   it('Owners can set the price of their token', async () => {
-    const oldPrice = await this.collectibles.price(TEST_TOKEN_ID);
+    const oldPrice = await this.collectibles.prices(TEST_TOKEN_ID);
     assert.equal(oldPrice, 0);
 
     const result = await this.collectibles.setPrice(TEST_TOKEN_ID, TEST_PRICE, { from: creator });
@@ -86,11 +86,21 @@ contract('PatronageCollectibles', ([creator, patron, stranger]) => {
       },
     }, 'A PriceUpdated event is emitted.');
 
-    const newPrice = await this.collectibles.price(TEST_TOKEN_ID);
+    const newPrice = await this.collectibles.prices(TEST_TOKEN_ID);
     assert.equal(newPrice, TEST_PRICE);
   });
 
   it('Non-owners cannot set prices', async () => {
     await expectThrow(this.collectibles.setPrice(TEST_TOKEN_ID, TEST_PRICE, { from: stranger }));
   });
+
+  // it('taxes are due over time', async () => {
+  //   const taxWindow = await this.patrons.taxWindow();
+  //   assert.equal(taxWindow, SECONDS_IN_A_DAY);
+
+  //   await timeTravel(SECONDS_IN_A_DAY * 1); // Wait 1 day
+
+  //   const taxes = await this.patrons.taxesDue(PATRONAGE_ID);
+  //   assert.equal(taxes.toNumber(), 1); // Tax is 1% per day
+  // });  
 });
