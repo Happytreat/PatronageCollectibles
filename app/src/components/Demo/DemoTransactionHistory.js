@@ -17,6 +17,11 @@ const columns = [
     title: 'Tier',
     dataIndex: 'tier',
     key: 'tier',
+    render: (text) => {
+      return (
+        <Tag color="gold">{text}</Tag>
+      )
+    }
   },  
   {
     title: 'Sent by',
@@ -32,19 +37,19 @@ const columns = [
 
 const data = [{
   tokenId: '#440723636211504800',
-  tier: 'gold',
+  tier: 'Gold',
   address: 'mel.patronage.eth',
   amount: 'Ξ200'
   },
   {
     tokenId: '#690182961454529800',
-    tier: 'bronze',
+    tier: 'Bronze',
     address: 'yos.patronage.eth',
     amount: 'Ξ300'
   },
   {
     tokenId: '#720025927993815000',
-    tier: 'gold',
+    tier: 'Gold',
     address: 'yos.patronage.eth',
     amount: 'Ξ1200'
   }

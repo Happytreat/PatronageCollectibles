@@ -5,6 +5,8 @@ import { Form, Input, Button, Typography } from 'antd';
 import 'antd/dist/antd.css';
 import {Grid} from "@material-ui/core";
 
+const { Text } = Typography;
+
 const translateType = type => {
   switch (true) {
     case /^uint/.test(type):
@@ -108,21 +110,24 @@ class MintForm extends Component {
           // check if input type is struct and if so loop out struct fields as well
           return (input.name !== 'tokenId')
             ? (
-              <Form.Item>
-                <Input
-                  key={input.name}
-                  type={inputType}
-                  name={input.name}
-                  value={this.state[input.name]}
-                  label={'Tier'}
-                  placeholder={'Tier'}
-                  onChange={this.handleInputChange}
-                  style={{width: '250px'}}
-                />
-              </Form.Item>
+              <div>
+                <p><Text>Set the tier for your collectible:</Text></p>
+                <Form.Item>
+                  <Input
+                    key={input.name}
+                    type={inputType}
+                    name={input.name}
+                    value={this.state[input.name]}
+                    label={'Tier'}
+                    placeholder={'Set Tier'}
+                    onChange={this.handleInputChange}
+                    style={{width: '250px'}}
+                  />
+                </Form.Item>
+              </div>
           ) : (
               <Typography>
-                <Paragraph>The unique id for this collectible is: {tokenId}</Paragraph>
+                <Paragraph>The unique id for this collectible is: <Text strong>{tokenId}</Text></Paragraph>
               </Typography>
           );
         })}
@@ -132,7 +137,7 @@ class MintForm extends Component {
             type="primary"
             onClick={this.handleSubmit}
           >
-            Create
+            Create a new Collectible
           </Button>
         </Form.Item>
       </Form>
