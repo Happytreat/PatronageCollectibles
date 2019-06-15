@@ -12,7 +12,7 @@ const options = {
   contracts: [SimpleStorage, PatronageCollectibles],
   events: {
     SimpleStorage: ["StorageSet"],
-    PatronageCollectibles: ["Minted"]
+    PatronageCollectibles: ["Minted", "Bought", "PriceUpdated"]
   },
   polls: {
     // set polling interval to 30secs so we don't get buried in poll events

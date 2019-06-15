@@ -17,7 +17,7 @@ const translateType = type => {
   }
 };
 
-class SetPriceForm extends Component {
+class BuyForm extends Component {
   constructor(props, context) {
     super(props);
 
@@ -116,7 +116,7 @@ class SetPriceForm extends Component {
               />
             </Form.Item>
           ) : (
-            <Text>Change Price</Text>
+            <Text>Buy and Set Price</Text>
           );
         })}
         <Form.Item>
@@ -125,7 +125,7 @@ class SetPriceForm extends Component {
             type="primary"
             onClick={this.handleSubmit}
           >
-            Submit
+            Buy
           </Button>
         </Form.Item>
       </Form>
@@ -133,11 +133,11 @@ class SetPriceForm extends Component {
   }
 }
 
-SetPriceForm.contextTypes = {
+BuyForm.contextTypes = {
   drizzle: PropTypes.object,
 };
 
-SetPriceForm.propTypes = {
+BuyForm.propTypes = {
   contract: PropTypes.string.isRequired,
   method: PropTypes.string.isRequired,
   sendArgs: PropTypes.object,
@@ -155,4 +155,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default drizzleConnect(SetPriceForm, mapStateToProps);
+export default drizzleConnect(BuyForm, mapStateToProps);

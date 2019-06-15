@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Tag, Card, Typography } from 'antd';
 import {Grid} from "@material-ui/core";
 import SetPriceForm from '../components/SetPriceForm';
+import BuyForm from '../components/BuyForm';
 
 const { Text, Paragraph } = Typography;
 
@@ -33,7 +34,6 @@ class Collectible extends Component {
 
     // TODO: have Solidity struct with more data
     const uri = contract.tokenURI[this.dataKey].value;
-    console.log(uri);
 
     const { 
       0: creator,
@@ -43,10 +43,15 @@ class Collectible extends Component {
       4: canReclaim
     } = contract.info[this.dataKey].value;
 
-    const setPriceForm = (this.props.accounts[0] === owner ? (<Paragraph>
-      <Text>Current Price: {price} </Text>
-      <SetPriceForm contract="PatronageCollectibles" method="setPrice" labels={['tokenId', 'New Price']} tokenId={this.props.tokenId}/>
-    </Paragraph>) : null)
+    const actionForm = (this.props.accounts[0] === owner ? 
+      (
+        <SetPriceForm contract="PatronageCollectibles" method="setPrice" labels={['tokenId', 'New Price']} tokenId={this.props.tokenId}/>
+      ) 
+      : 
+      (
+        <BuyForm contract="PatronageCollectibles" method="buy" labels={['tokenId', 'NewPrice']} tokenId={this.props.tokenId} sendArgs={{ value: price }}/>
+      )
+    )
 
     return (
       <Grid item xs={2}>
@@ -58,14 +63,18 @@ class Collectible extends Component {
               </Text>
             </Paragraph>
             <Paragraph>
-              <a href="#">Kpop CoverStar</a>
+              by <a href="#">Kpop CoverStar</a>
             </Paragraph>
             <Paragraph>
               <Tag color="gold">
                 {uri}
               </Tag>
+            </Paragraph>  
+            <Paragraph>
+              <Text>Current Price: {price} {pendingSpinner}</Text>
             </Paragraph>
-            {setPriceForm}
+            <hr></hr>
+            {actionForm}
           </Typography>
         </Card>
       </Grid>
