@@ -43,6 +43,11 @@ class Collectible extends Component {
       4: canReclaim
     } = contract.info[this.dataKey].value;
 
+    const setPriceForm = (this.props.accounts[0] === owner ? (<Paragraph>
+      <Text>Current Price: {price} </Text>
+      <SetPriceForm contract="PatronageCollectibles" method="setPrice" labels={['tokenId', 'New Price']} tokenId={this.props.tokenId}/>
+    </Paragraph>) : null)
+
     return (
       <Grid item xs={2}>
         <Card hoverable cover={<img alt='' src={`https://robohash.org/${this.props.tokenId}?set=set4`} />} style={{ width: 200 }}>
@@ -60,10 +65,7 @@ class Collectible extends Component {
                 {uri}
               </Tag>
             </Paragraph>
-            <Paragraph>
-              <Text>Current Price: {price} </Text>
-              <SetPriceForm contract="PatronageCollectibles" method="setPrice" labels={['tokenId', 'New Price']} tokenId={this.props.tokenId}/>
-            </Paragraph>
+            {setPriceForm}
           </Typography>
         </Card>
       </Grid>
@@ -83,6 +85,7 @@ Collectible.defaultProps = {
 };
 
 const mapStateToProps = state => ({
+  accounts: state.accounts,
   contracts: state.contracts,
 });
 export default drizzleConnect(Collectible, mapStateToProps);
