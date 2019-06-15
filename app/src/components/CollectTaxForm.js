@@ -116,7 +116,7 @@ class CollectTaxForm extends Component {
               />
             </Form.Item>
           ) : (
-            <Text>Buy and Set Price</Text>
+            null
           );
         })}
         <Form.Item>
@@ -125,7 +125,7 @@ class CollectTaxForm extends Component {
             type="primary"
             onClick={this.handleSubmit}
           >
-            Buy
+            Collect
           </Button>
         </Form.Item>
       </Form>
