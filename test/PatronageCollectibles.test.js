@@ -4,12 +4,13 @@ const PatronageCollectibles = artifacts.require("PatronageCollectibles.sol");
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 const TEST_TOKEN_ID = 123;
+const NEW_TOKEN_ID = 111;
 const TEST_URI = 'mock://mytoken';
 const TEST_DEPOSIT = 100;
 const TEST_PRICE = 1000;
 const SECONDS_IN_A_DAY = 86400;
 
-contract('PatronageCollectibles', ([creator, patron, stranger]) => {
+contract('PatronageCollectibles', ([creator, patron, patron2, stranger]) => {
   before(async () => {
     this.collectibles = await PatronageCollectibles.new();
   });
@@ -162,8 +163,6 @@ contract('PatronageCollectibles', ([creator, patron, stranger]) => {
 
   // TODO: test buyz
   it('can buy a fresh collectible', async () => {
-    const NEW_TOKEN_ID = 111;
-
     await this.collectibles.mint(NEW_TOKEN_ID, TEST_URI, { from:creator });
     // mint new collectible
 
@@ -198,7 +197,49 @@ contract('PatronageCollectibles', ([creator, patron, stranger]) => {
     assert.equal(newOwner, patron);
   });
 
-  // can buy a reclaimable collectible
+  it('can buy a reclaimable collectible', async () => {
+    await timeTravel(SECONDS_IN_A_DAY * 1); // Wait 24 hours
+
+    const taxOwed = await this.collectibles.taxOwed(NEW_TOKEN_ID);
+    assert.equal(taxOwed, 240);
+
+    const taxBalance = await this.collectibles.taxes(NEW_TOKEN_ID);
+    assert.equal(taxBalance, 100);
+
+    const canReclaim = await this.collectibles.canReclaim(NEW_TOKEN_ID);
+    assert.equal(canReclaim, true);
+
+    const taxAmount = taxBalance;
+
+    const result = await this.collectibles.buy(NEW_TOKEN_ID, TEST_PRICE, { value: TEST_DEPOSIT, from: patron2 });
+    assertEvent(result, {
+      event: 'Collected',
+      args: {
+        tokenId: NEW_TOKEN_ID,
+        taxAmount: taxAmount.toNumber(),
+        from: patron2,
+      },
+    }, 'A Collected event is emitted.');
+    assertEvent(result, {
+      event: 'Reclaimed',
+      args: {
+        tokenId: NEW_TOKEN_ID,
+        from: patron2,
+      },
+    }, 'A Reclaimed event is emitted.', 1);    
+    assertEvent(result, {
+      event: 'Bought',
+      args: {
+        tokenId: NEW_TOKEN_ID,
+        paidAmount: TEST_DEPOSIT,
+        latestPrice: 0,
+        from: patron2,
+      },
+    }, 'A Bought event is emitted.', 2);
+
+    const newOwner = await this.collectibles.ownerOf(NEW_TOKEN_ID);
+    assert.equal(newOwner, patron2);
+  });
 
   // can buy a collectible with excess taxes
 });
