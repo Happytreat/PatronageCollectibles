@@ -12,7 +12,7 @@ import CarouselThree from '../assets/images/bts.jpg'
 import Display from "../assets/images/dp.png";
 import {Grid} from "@material-ui/core";
 import PaddedPaper from "../atoms/PaddedPaper/PaddedPaper";
-import DemoCollectibles from "../components/DemoCollectibles";
+import DemoCollectibles from "../components/Demo/DemoCollectibles";
 
 // import withStyles from "@material-ui/core/styles/withStyles";
 

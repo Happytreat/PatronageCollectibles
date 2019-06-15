@@ -6,6 +6,7 @@ import { PageHeader, Typography, Divider, Tabs } from 'antd';
 import { contract } from '../const/contract';
 import CollectiblesTable from "../components/CollectiblesTable";
 import MintForm from "../components/MintForm";
+import DemoTransactionHistory from "../components/Demo/DemoTransactionHistory";
 
 const { Title, Paragraph, Text, Tag } = Typography;
 const { TabPane } = Tabs;
@@ -31,6 +32,15 @@ export default ({ accounts }) => (
                   <br />
                   <div style={{width: '600px', margin: 'auto', paddingTop: '5px'}}>
                     <MintForm contract={contract} method="mint" />
+                  </div>
+                </TabPane>
+                <TabPane tab="Transaction History" key="3" align="center">
+                  <strong>View the transaction history of collectibles you have minted: </strong>
+
+                  <br />
+                  <br />
+                  <div style={{width: '800px', margin: 'auto', paddingTop: '5px'}}>
+                    <DemoTransactionHistory />
                   </div>
                 </TabPane>
               </Tabs>
