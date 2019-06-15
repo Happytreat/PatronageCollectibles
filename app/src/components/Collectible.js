@@ -75,7 +75,7 @@ class Collectible extends Component {
 
     return (
       <Grid item xs={2}>
-        <Card hoverable cover={<img alt='' src={`https://robohash.org/${this.props.tokenId}?set=set4`} />} style={{ width: 200 }}>
+        <Card hoverable cover={<img alt='' src={`https://robohash.org/${this.props.tokenId}?set=set4`} />} style={{ height: 800,width: 200 }}>
           <Typography>
             <Paragraph>
               <Text strong>
