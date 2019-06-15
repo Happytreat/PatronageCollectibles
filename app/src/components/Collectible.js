@@ -5,6 +5,7 @@ import { Tag, Card, Typography } from 'antd';
 import {Grid} from "@material-ui/core";
 import SetPriceForm from '../components/SetPriceForm';
 import BuyForm from '../components/BuyForm';
+import { Button } from 'antd';
 
 const { Text, Paragraph } = Typography;
 
@@ -53,6 +54,16 @@ class Collectible extends Component {
       )
     )
 
+    const collectButton = (
+      <Button
+        key="submit"
+        type="primary"
+        onClick={this.handleSubmit}
+      >
+        Collect $$$
+      </Button>
+    )
+
     return (
       <Grid item xs={2}>
         <Card hoverable cover={<img alt='' src={`https://robohash.org/${this.props.tokenId}?set=set4`} />} style={{ width: 200 }}>
@@ -73,7 +84,7 @@ class Collectible extends Component {
             <Paragraph>
               <Text>Current Price: {price} {pendingSpinner}</Text>
             </Paragraph>
-            {this.props.hideActions ? null : actionForm}
+            {this.props.hideActions ? collectButton : actionForm}
           </Typography>
         </Card>
       </Grid>

@@ -3,7 +3,6 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Mint from '../assets/images/mintcoins.svg';
 import { PageHeader, Typography, Divider, Tabs } from 'antd';
-import PaddedPaper from "../atoms/PaddedPaper/PaddedPaper";
 import { contract } from '../const/contract';
 import CollectiblesTable from "../components/CollectiblesTable";
 import MintForm from "../components/MintForm";
@@ -13,9 +12,8 @@ const { TabPane } = Tabs;
 
 export default ({ accounts }) => (
     <div>
-        <div className="App" style={{backgroundColor: '#0667d0', width: '95%'}}>
+        <div className="App">
             <ToastContainer />
-            <PaddedPaper>
               <img src={Mint} alt="Minting coins" style={{ height: '400px', width: '400px' }}/>
               <Typography>
                 <Title>Creator Dashboard</Title>
@@ -37,7 +35,6 @@ export default ({ accounts }) => (
                   </div>
                 </TabPane>
               </Tabs>
-            </PaddedPaper>
         </div>
     </div>
 );

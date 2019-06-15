@@ -13,18 +13,16 @@ const { TabPane } = Tabs;
 
 export default ({ accounts }) => (
   <div>
-    <div className="App" style={{backgroundColor: '#0667d0', width: '95%'}}>
+    <div className="App">
       <ToastContainer />
-      <PaddedPaper>
-        <img src={myCollectibles} alt="My Collectibles" style={{ height: '400px', width: '400px' }}/>
-        <Typography>
-          <Title>My Collectible Wallet</Title>
-          <Paragraph>View and configure the unique collectibles you own.</Paragraph>
-        </Typography>
+      <img src={myCollectibles} alt="My Collectibles" style={{ height: '400px', width: '400px' }}/>
+      <Typography>
+        <Title>My Collectible Wallet</Title>
+        <Paragraph>View and configure the unique collectibles you own.</Paragraph>
+      </Typography>
 
-        <Divider />
-        <CollectiblesWallet account={accounts[0]}/>
-      </PaddedPaper>
+      <Divider />
+      <CollectiblesWallet account={accounts[0]}/>
     </div>
   </div>
 );
