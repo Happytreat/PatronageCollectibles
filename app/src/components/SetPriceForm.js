@@ -91,7 +91,7 @@ class SetPriceForm extends Component {
       });
     }
 
-    const { Title, Paragraph, Text } = Typography;
+    const { Text } = Typography;
 
     return (
       <Form
