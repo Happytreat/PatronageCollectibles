@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Form, Input, Button, Typography } from 'antd';
 import 'antd/dist/antd.css';
+import {Grid} from "@material-ui/core";
 
 const translateType = type => {
   switch (true) {
@@ -107,19 +108,21 @@ class MintForm extends Component {
           // check if input type is struct and if so loop out struct fields as well
           return (input.name !== 'tokenId')
             ? (
-            <Form.Item>
-              <Input
-                key={input.name}
-                type={inputType}
-                name={input.name}
-                value={this.state[input.name]}
-                placeholder={inputLabel}
-                onChange={this.handleInputChange}
-              />
-            </Form.Item>
+              <Form.Item>
+                <Input
+                  key={input.name}
+                  type={inputType}
+                  name={input.name}
+                  value={this.state[input.name]}
+                  label={'Tier'}
+                  placeholder={'Tier'}
+                  onChange={this.handleInputChange}
+                  style={{width: '250px'}}
+                />
+              </Form.Item>
           ) : (
               <Typography>
-                <Text>The unique id for this collectible is: {tokenId}</Text>
+                <Paragraph>The unique id for this collectible is: {tokenId}</Paragraph>
               </Typography>
           );
         })}

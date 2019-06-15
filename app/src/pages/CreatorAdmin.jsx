@@ -20,7 +20,6 @@ export default ({ accounts }) => (
                 <Paragraph>Mint and sell unique collectibles here.</Paragraph>
               </Typography>
 
-              <Divider />
               <Tabs defaultActiveKey="1" tabPosition="top" tabBarGutter>
                 <TabPane tab="Collectibles I minted" key="1" align="center">
                   <CollectiblesTable account={accounts[0]}/>
