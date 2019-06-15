@@ -12,6 +12,7 @@ import CarouselThree from '../assets/images/bts.jpg'
 import Display from "../assets/images/dp.png";
 import {Grid} from "@material-ui/core";
 import PaddedPaper from "../atoms/PaddedPaper/PaddedPaper";
+import CollectiblesWallet from "../components/CollectiblesWallet";
 
 // import withStyles from "@material-ui/core/styles/withStyles";
 
@@ -116,6 +117,7 @@ class MyComponent extends Component {
                   </PaddedPaper>
                 </Grid>
               <Divider />
+              <CollectiblesWallet account={this.props.accounts[0]}/>
             </Grid>
           </div>
         </PageHeader>
