@@ -8,6 +8,7 @@ import Patron from "../assets/images/patron.svg";
 import Pikachu from "../assets/images/Pikachu.png";
 import Salad from "../assets/images/salad.png";
 import Blockstack from "../assets/images/vitalik.jpeg";
+import Kitty from '../assets/images/KittyCarousel.jpg'
 
 const { Title, Paragraph, Text, Tag } = Typography;
 const { TabPane } = Tabs;
@@ -58,9 +59,9 @@ export default () => (
           <br />
           <br />
           <Grid item xs={3}>
-            <Card title="Kpop Cover Star" extra={<img src={Kpop} alt="Kpop"style={styles.display}/>} style={{ width: 300 }}>
-              <p>Kpop dancer gives personalized shout-outs and patron-only access to the previous episodes of their video series.</p>
-              <p><a href="/creators/kpopcoverstar">See a sneak peek of patron-only content</a></p>
+            <Card title="Kitty Lover" extra={<img src={Kitty} alt="Kitty"style={styles.display}/>} style={{ width: 300 }}>
+              <p>Hello Kitty designer gives personalized shout-outs and patron-only access to the previous episodes of their video series.</p>
+              <p><a href="#">See a sneak peek of patron-only content</a></p>
             </Card>
           </Grid>
           <Grid item xs={3}>

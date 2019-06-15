@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import 'react-toastify/dist/ReactToastify.css'
 
 import { Tabs, PageHeader, Typography, Divider, Button } from 'antd';
-import { Link } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import CreatorAdmin from './pages/CreatorAdmin';
 import Patron from './pages/Patron';
 import Profile from './pages/Profile';
 import PublicCreators from './pages/PublicCreators';
+import { Logo } from './components/Logo';
 
 // import withStyles from "@material-ui/core/styles/withStyles";
 
@@ -25,13 +25,6 @@ const { Text } = Typography;
 //     },
 // });
 
-const Logo = () => (
-  <div>
-    <img src="https://robohash.org/123erf4?set=set4" alt="logo" style={{width: 60, height: 50, paddingRight: 10, display: 'inline'}}/>
-    <h2 style={{fontWeight: 700, display: 'inline'}}>Patronage Collectibles</h2>
-  </div>
-);
-
 class MyComponent extends Component {
   render() {
     //console.log(this.props);
@@ -40,9 +33,9 @@ class MyComponent extends Component {
             <PageHeader>
               <Logo />
               <Divider />
-              <Tabs ttdefaultActiveKey="3" tabPosition="left" tabBarGutter >
+              <Tabs defaultActiveKey="1" tabPosition="left" tabBarGutter >
                   <TabPane tab="My Profile" key="1">
-                      <Profile/>
+                      <Profile accounts={this.props.accounts}/>
                   </TabPane>
                   <TabPane tab="Creator Dashboard" key="2">
                       <CreatorAdmin accounts={this.props.accounts}/>
