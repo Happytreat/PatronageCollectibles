@@ -27,7 +27,7 @@ class CollectiblesWallet extends Component {
     const tokensOfOwner = contract.tokensOfOwner[this.tokensOfOwner].value;
     const collectibles = tokensOfOwner.map(tokenId => {
       return (
-        <Collectible tokenId={tokenId} hideOwner={true} />
+        <Collectible tokenId={tokenId} hideOwner />
       )
     });
 
