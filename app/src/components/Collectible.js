@@ -58,8 +58,10 @@ class Collectible extends Component {
       (
         <div>
           <hr></hr>
+          <br />
           <SetPriceForm contract="PatronageCollectibles" method="setPrice" labels={['tokenId', 'New Price']} tokenId={this.props.tokenId}/>  
           <hr></hr>
+          <br />
           <DepositTaxForm contract="PatronageCollectibles" method="deposit" labels={['tokenId']} tokenId={this.props.tokenId}/>  
         </div>
       ) 
@@ -75,31 +77,35 @@ class Collectible extends Component {
 
     return (
       <Grid item xs={2}>
-        <Card hoverable cover={<img alt='' src={`https://robohash.org/${this.props.tokenId}?set=set4`} />} style={{ height: 800,width: 200 }}>
+        <Card hoverable cover={<img alt='' src={`https://robohash.org/${this.props.tokenId}?set=set4`} />} style={{ height: 900, width: 200 }}>
           <Typography>
             <Paragraph>
-              <Text strong>
-                #{this.props.tokenId}
-              </Text>
+              <Tag style={{ fontSize: '1.2em' }} color="gold">
+                {uri}
+              </Tag>
             </Paragraph>
             <Paragraph>
               by <a href="/creators/kpopcoverstar">Kpop CoverStar</a>
             </Paragraph>
             <Paragraph>
-              <Tag style={{ fontSize: '1.2em' }} color="gold">
-                {uri}
-              </Tag>
-            </Paragraph>  
+              <Text strong>
+                #{this.props.tokenId}
+              </Text>
+            </Paragraph>
             {this.props.hideOwner ? null : ownerInfo}
             <Paragraph>
               <h3>Price: Ξ{price} {pendingSpinner}</h3>
             </Paragraph>
-            <Paragraph>
-              <h4>Tax Balance: Ξ{taxBalance} {pendingSpinner}</h4>
-            </Paragraph>
-            <Paragraph>
-              <h4>Tax Owed: Ξ{taxOwed} {pendingSpinner}</h4>
-            </Paragraph>
+            {this.props.hideTax ? null : (
+              <div>
+                <Paragraph>
+                  <h4>Tax Balance: Ξ{taxBalance} {pendingSpinner}</h4>
+                </Paragraph>
+                <Paragraph>
+                  <h4>Tax Owed: Ξ{taxOwed} {pendingSpinner}</h4>
+                </Paragraph>
+              </div>
+              )}
             {this.props.hideActions ? null : actionForm}
             {this.props.hideCollect ? null : collectButton}
           </Typography>

@@ -116,16 +116,19 @@ class DepositTaxForm extends Component {
               />
             </Form.Item>
           ) : (
-            <Form.Item>
-            <Input
-              key={"deposit-value"}
-              type="number"
-              name="deposit"
-              value={this.state["deposit"]}
-              placeholder="Deposit Amount"
-              onChange={this.handleDepositChange.bind(this)}
-            />
-          </Form.Item>
+            <div>
+              <p><Text>Pledge to Creator</Text></p>
+              <Form.Item>
+              <Input
+                key={"deposit-value"}
+                type="number"
+                name="deposit"
+                value={this.state["deposit"]}
+                placeholder="Deposit Pledge"
+                onChange={this.handleDepositChange.bind(this)}
+              />
+              </Form.Item>
+            </div>
           );
         })}
         <Form.Item>

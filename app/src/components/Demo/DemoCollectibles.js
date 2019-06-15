@@ -55,7 +55,7 @@ class CollectiblesTable extends Component {
     const tokensOfCreator = contract.tokensOfCreator[this.tokensOfCreator].value;
 
     const collectibles = tokensOfCreator.map(tokenId => (
-      <Collectible tokenId={tokenId} />
+      <Collectible tokenId={tokenId} hideTax={true} />
     ))
 
     return (

@@ -111,12 +111,12 @@ class BuyForm extends Component {
                 type={inputType}
                 name={input.name}
                 value={this.state[input.name]}
-                placeholder={inputLabel}
+                placeholder={'New Price'}
                 onChange={this.handleInputChange}
               />
             </Form.Item>
           ) : (
-            <Text>Buy and Set Price</Text>
+            <p><Text>Buy and Set Price</Text></p>
           );
         })}
         <Form.Item>
@@ -125,7 +125,7 @@ class BuyForm extends Component {
             type="primary"
             onClick={this.handleSubmit}
           >
-            Buy
+            Buy Collectible
           </Button>
         </Form.Item>
       </Form>

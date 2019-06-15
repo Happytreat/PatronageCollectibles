@@ -116,7 +116,7 @@ class SetPriceForm extends Component {
               />
             </Form.Item>
           ) : (
-            <Text>Change Price</Text>
+            <p><Text>Change Price</Text></p>
           );
         })}
         <Form.Item>
@@ -125,7 +125,7 @@ class SetPriceForm extends Component {
             type="primary"
             onClick={this.handleSubmit}
           >
-            Submit
+            Change Price
           </Button>
         </Form.Item>
       </Form>

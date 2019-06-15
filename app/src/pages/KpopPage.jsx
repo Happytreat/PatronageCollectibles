@@ -129,11 +129,13 @@ class MyComponent extends Component {
                       )}
                     />
                   </PaddedPaper>
-
+                </Grid>
+                <Grid item xs={9}>
                   <PaddedPaper>
                     <img 
                       width={640}
-                      src="https://i.imgur.com/B9mbi98.png" 
+                      src="https://i.imgur.com/B9mbi98.png"
+                      style={{marginLeft: '25%'}}
                     />
                     <a href="#"><p style={{ 'text-align': 'center' }}>See more posts</p></a>
                   </PaddedPaper>
