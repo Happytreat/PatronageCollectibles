@@ -4,12 +4,9 @@ import 'react-toastify/dist/ReactToastify.css'
 import Mint from '../assets/images/mintcoins.svg';
 import { PageHeader, Typography, Divider, Tabs } from 'antd';
 import PaddedPaper from "../atoms/PaddedPaper/PaddedPaper";
-import { ContractData, ContractForm } from "drizzle-react-components";
-import {Collectible} from "../components";
 import { contract } from '../const/contract';
 import CollectiblesTable from "../components/CollectiblesTable";
 import MintForm from "../components/MintForm";
-import Profile from "./Profile";
 
 const { Title, Paragraph, Text, Tag } = Typography;
 const { TabPane } = Tabs;
