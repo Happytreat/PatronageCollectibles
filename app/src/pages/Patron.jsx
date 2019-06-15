@@ -1,7 +1,7 @@
 import React from "react";
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import myCollectibles from '../assets/images/myCollectible.svg';
+import myCollectibles from '../assets/images/patronyellow.svg';
 import { PageHeader, Typography, Divider, Tabs } from 'antd';
 import PaddedPaper from "../atoms/PaddedPaper/PaddedPaper";
 import { contract } from '../const/contract';
