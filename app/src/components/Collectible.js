@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tag, Card, Typography } from 'antd';
 import {Grid} from "@material-ui/core";
+import SetPriceForm from '../components/SetPriceForm';
 
 const { Text, Paragraph } = Typography;
 
@@ -12,6 +13,7 @@ class Collectible extends Component {
 
     this.contracts = context.drizzle.contracts;
     this.dataKey = this.contracts.PatronageCollectibles.methods.tokenURI.cacheCall(this.props.tokenId);
+    this.infoKey = this.contracts.PatronageCollectibles.methods.info.cacheCall(this.props.tokenId);
   }
 
   render() {
@@ -20,7 +22,7 @@ class Collectible extends Component {
       return (
         <em>"Initializing..."</em>
       );
-    } else if (!(this.dataKey in contract.tokenURI)) {
+    } else if (!(this.dataKey in contract.tokenURI) || !(this.infoKey in contract.info)) {
       return (
         <em>"Fetching..."</em>
       );
@@ -33,6 +35,14 @@ class Collectible extends Component {
     const uri = contract.tokenURI[this.dataKey].value;
     console.log(uri);
 
+    const { 
+      0: creator,
+      1: owner,
+      2: taxBalance,
+      3: price,
+      4: canReclaim
+    } = contract.info[this.dataKey].value;
+
     return (
       <Grid item xs={2}>
         <Card hoverable cover={<img alt='' src={`https://robohash.org/${this.props.tokenId}?set=set4`} />} style={{ width: 200 }}>
@@ -43,7 +53,14 @@ class Collectible extends Component {
               </Text>
             </Paragraph>
             <Paragraph>
-              <Text>Creator:</Text>
+              <Text>Creator: {creator} </Text>
+            </Paragraph>
+            <Paragraph>
+              <Text>Owner: {owner} </Text>
+            </Paragraph>
+            <Paragraph>
+              <Text>Tax Balance: {taxBalance} </Text>
+              <Text>Underpaid: {canReclaim ? 'yes' : 'no ' } </Text>
             </Paragraph>
             <Paragraph>
               <a href="#">Kpop CoverStar</a>
@@ -52,6 +69,10 @@ class Collectible extends Component {
               <Tag color="gold">
                 {uri}
               </Tag>
+            </Paragraph>
+            <Paragraph>
+              <Text>Current Price: {price} </Text>
+              <SetPriceForm contract="PatronageCollectibles" method="setPrice" labels={['tokenId', 'New Price']} tokenId={[this.props.tokenId]}/>
             </Paragraph>
           </Typography>
         </Card>
