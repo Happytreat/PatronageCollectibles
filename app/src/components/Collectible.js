@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Tag, Card, Typography } from 'antd';
 import {Grid} from "@material-ui/core";
 import SetPriceForm from '../components/SetPriceForm';
+import DepositTaxForm from '../components/DepositTaxForm';
 import BuyForm from '../components/BuyForm';
 import { Button } from 'antd';
 
@@ -15,6 +16,7 @@ class Collectible extends Component {
 
     this.contracts = context.drizzle.contracts;
     this.dataKey = this.contracts.PatronageCollectibles.methods.tokenURI.cacheCall(this.props.tokenId);
+    this.taxOwedKey = this.contracts.PatronageCollectibles.methods.taxOwed.cacheCall(this.props.tokenId);
     this.infoKey = this.contracts.PatronageCollectibles.methods.info.cacheCall(this.props.tokenId);
   }
 
@@ -24,7 +26,7 @@ class Collectible extends Component {
       return (
         <em>"Initializing..."</em>
       );
-    } else if (!(this.dataKey in contract.tokenURI) || !(this.infoKey in contract.info)) {
+    } else if (!(this.dataKey in contract.tokenURI) || !(this.infoKey in contract.info) || !(this.taxOwedKey in contract.taxOwed)) {
       return (
         <em>"Fetching..."</em>
       );
@@ -42,6 +44,8 @@ class Collectible extends Component {
       4: canReclaim
     } = contract.info[this.dataKey].value;
 
+    const taxOwed = contract.taxOwed[this.taxOwedKey].value;
+
     const ownerInfo = (
       <Paragraph style={{'word-wrap': 'break-word'}}>
         Owner: {owner}
@@ -50,7 +54,12 @@ class Collectible extends Component {
 
     const actionForm = (this.props.accounts[0] === owner ? 
       (
-        <SetPriceForm contract="PatronageCollectibles" method="setPrice" labels={['tokenId', 'New Price']} tokenId={this.props.tokenId}/>
+        <div>
+          <hr></hr>
+          <SetPriceForm contract="PatronageCollectibles" method="setPrice" labels={['tokenId', 'New Price']} tokenId={this.props.tokenId}/>  
+          <hr></hr>
+          <DepositTaxForm contract="PatronageCollectibles" method="deposit" labels={['tokenId']} tokenId={this.props.tokenId}/>  
+        </div>
       ) 
       : 
       (
@@ -88,6 +97,12 @@ class Collectible extends Component {
             </Paragraph>  
             <Paragraph>
               <h4>Price: Ξ{price} {pendingSpinner}</h4>
+            </Paragraph>
+            <Paragraph>
+              <h5>Tax Balance: Ξ{taxBalance} {pendingSpinner}</h5>
+            </Paragraph>
+            <Paragraph>
+              <h5>Tax Owed: Ξ{taxOwed} {pendingSpinner}</h5>
             </Paragraph>
             {this.props.hideActions ? null : actionForm}
             {this.props.hideCollect ? null : collectButton}

@@ -79,10 +79,16 @@ class MyComponent extends Component {
               </Carousel>
             </div>
             <Grid container spacing={2} alignContent="center" justify="center" style={{padding: '20px'}}>
-              <Grid item xs={12} style={{marginLeft: '45%'}}>
+              <Grid item xs={12} style={{marginLeft: '40%'}}>
                 <img src={Display} alt="Display Pic" style={{borderRadius: 30, height: 150, width: 150, display:'inline'}}/>
                 <Text strong>Kpop Cover Star</Text>
               </Grid>
+                <Grid item xs={3}>
+                  <PaddedPaper>
+                    <strong>About</strong>
+                    <p>Kpop dancer gives personalized shout-outs and patron-only access to the previous episodes of their video series.</p>
+                  </PaddedPaper>
+                </Grid>
                 <Grid item xs={6}>
                   <PaddedPaper>
                     <List
