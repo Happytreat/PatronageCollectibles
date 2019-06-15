@@ -32,8 +32,6 @@ class Collectible extends Component {
 
     // Show a loading spinner for future updates.
     const pendingSpinner = contract.synced ? '' : ' 🔄';
-
-    // TODO: have Solidity struct with more data
     const uri = contract.tokenURI[this.dataKey].value;
 
     const { 
@@ -43,6 +41,12 @@ class Collectible extends Component {
       3: price,
       4: canReclaim
     } = contract.info[this.dataKey].value;
+
+    const ownerInfo = (
+      <Paragraph style={{'word-wrap': 'break-word'}}>
+        Owner: {owner}
+      </Paragraph>
+    );
 
     const actionForm = (this.props.accounts[0] === owner ? 
       (
@@ -60,7 +64,7 @@ class Collectible extends Component {
         type="primary"
         onClick={this.handleSubmit}
       >
-        Collect $$$
+        Collect Taxes
       </Button>
     )
 
@@ -76,13 +80,14 @@ class Collectible extends Component {
             <Paragraph>
               by <a href="/creators/kpopcoverstar">Kpop CoverStar</a>
             </Paragraph>
+            {this.props.hideOwner ? null : ownerInfo}
             <Paragraph>
               <Tag color="gold">
                 {uri}
               </Tag>
             </Paragraph>  
             <Paragraph>
-              <Text>Current Price: {price} {pendingSpinner}</Text>
+              <h4>Price: Ξ{price} {pendingSpinner}</h4>
             </Paragraph>
             {this.props.hideActions ? null : actionForm}
             {this.props.hideCollect ? null : collectButton}
@@ -105,7 +110,8 @@ Collectible.propTypes = {
 Collectible.defaultProps = {
   tokenId: null,
   hideActions: false,
-  hideCollect: true
+  hideCollect: true,
+  hideOwner: false
 };
 
 const mapStateToProps = state => ({
