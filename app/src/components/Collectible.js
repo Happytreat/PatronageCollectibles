@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Tag, Card, Typography } from 'antd';
 import {Grid} from "@material-ui/core";
 import SetPriceForm from '../components/SetPriceForm';
+import DepositTaxForm from '../components/DepositTaxForm';
 
 const { Text, Paragraph } = Typography;
 
@@ -59,10 +60,6 @@ class Collectible extends Component {
               <Text>Owner: {owner} </Text>
             </Paragraph>
             <Paragraph>
-              <Text>Tax Balance: {taxBalance} </Text>
-              <Text>Underpaid: {canReclaim ? 'yes' : 'no ' } </Text>
-            </Paragraph>
-            <Paragraph>
               <a href="#">Kpop CoverStar</a>
             </Paragraph>
             <Paragraph>
@@ -73,6 +70,12 @@ class Collectible extends Component {
             <Paragraph>
               <Text>Current Price: {price} </Text>
               <SetPriceForm contract="PatronageCollectibles" method="setPrice" labels={['tokenId', 'New Price']} tokenId={[this.props.tokenId]}/>
+            </Paragraph>
+            <hr></hr>
+            <Paragraph>
+              <Text>Tax Balance: {taxBalance} </Text>
+              <Text>Underpaid: {canReclaim ? 'yes' : 'no ' } </Text>
+              <DepositTaxForm contract="PatronageCollectibles" method="deposit" labels={['tokenId']} tokenId={[this.props.tokenId]}/>
             </Paragraph>
           </Typography>
         </Card>
