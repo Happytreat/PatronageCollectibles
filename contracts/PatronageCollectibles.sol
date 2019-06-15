@@ -66,7 +66,7 @@ contract PatronageCollectibles is ERC721Full {
   // Buys a Collectible
   function buy(uint tokenId, uint newPrice) public payable { // TODO: must be nonreentrant
     uint paidAmount = msg.value;
-    
+
     collect(tokenId); // Collect taxes
     reclaim(tokenId); // Reclaim if possible to lower price to 0
 
@@ -102,10 +102,12 @@ contract PatronageCollectibles is ERC721Full {
     uint balance = taxes[tokenId];
 
     if (owed > balance) { // insufficient tax deposited
+      taxes[tokenId] -= balance;
       paidThru[tokenId] += (now - paidThru[tokenId]) * balance / owed;
       emit Collected(tokenId, balance, msg.sender);
       beneficiary.transfer(balance);
     } else { // enough tax deposited
+      taxes[tokenId] -= owed;
       paidThru[tokenId] = now;
       emit Collected(tokenId, owed, msg.sender);
       beneficiary.transfer(owed); // Pay creator

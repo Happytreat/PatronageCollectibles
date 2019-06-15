@@ -246,7 +246,7 @@ contract('PatronageCollectibles', ([creator, patron, patron2, stranger]) => {
     assert.equal(newOwner, patron2);
   });
 
-  it.skip('can buy collectible with excess taxes', async () => {
+  it('can buy collectible with excess taxes', async () => {
     await timeTravel(SECONDS_IN_A_DAY * 1); // Wait 24 hours
 
     const taxOwed = await this.collectibles.taxOwed(NEW_TOKEN_ID);
@@ -254,6 +254,9 @@ contract('PatronageCollectibles', ([creator, patron, patron2, stranger]) => {
 
     const taxBalance = await this.collectibles.taxes(NEW_TOKEN_ID);
     assert.equal(taxBalance, 100);
+
+    let contractBalance = await web3.eth.getBalance(this.collectibles.address);
+    assert.equal(contractBalance, 100);
 
     await this.collectibles.deposit(NEW_TOKEN_ID, { from:patron2, value: 1000 });
 
@@ -263,12 +266,25 @@ contract('PatronageCollectibles', ([creator, patron, patron2, stranger]) => {
     const canReclaim = await this.collectibles.canReclaim(NEW_TOKEN_ID);
     assert.equal(canReclaim, false);
 
+    let newContractBalance = await web3.eth.getBalance(this.collectibles.address);
+    assert.equal(newContractBalance, 1100);
+
+    const taxAmount = taxOwed;
+
     const result = await this.collectibles.buy(NEW_TOKEN_ID, TEST_PRICE, { value: TEST_PRICE, from: patron });
+    assertEvent(result, {
+      event: 'Collected',
+      args: {
+        tokenId: NEW_TOKEN_ID,
+        taxAmount: taxOwed.toNumber(), // 240
+        from: patron,
+      },
+    }, 'A Collected event is emitted.');
     assertEvent(result, {
       event: 'Refunded',
       args: {
         tokenId: NEW_TOKEN_ID,
-        refund: 1100, // should be 2100, with new price
+        refund: 1860,
         to: patron2,
       },
     }, 'A Refunded event is emitted.', 2);
