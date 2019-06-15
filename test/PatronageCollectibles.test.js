@@ -90,7 +90,7 @@ contract('PatronageCollectibles', ([creator, patron, patron2, stranger]) => {
         newPrice: TEST_PRICE,
         tokenId: TEST_TOKEN_ID,
       },
-    }, 'A PriceUpdated event is emitted.');
+    }, 'A PriceUpdated event is emitted.', 1);
 
     const newPrice = await this.collectibles.prices(TEST_TOKEN_ID);
     assert.equal(newPrice, TEST_PRICE);
@@ -292,4 +292,6 @@ contract('PatronageCollectibles', ([creator, patron, patron2, stranger]) => {
     const newOwner = await this.collectibles.ownerOf(NEW_TOKEN_ID);
     assert.equal(newOwner, patron);
   });
+
+  // TODO: unit test tax collection before changing prices
 });

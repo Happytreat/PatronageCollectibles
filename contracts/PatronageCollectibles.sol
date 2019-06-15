@@ -96,6 +96,7 @@ contract PatronageCollectibles is ERC721Full {
   }
 
   // Collect taxes
+  // Forbid collection of collectibles with zero balances
   function collect(uint tokenId) public {
     uint owed = taxOwed(tokenId);
     address payable beneficiary = address(uint160(creatorOf(tokenId)));
@@ -139,8 +140,9 @@ contract PatronageCollectibles is ERC721Full {
 
   // Update token price
   function setPrice(uint tokenId, uint newPrice) public onlyOwnerOf(tokenId) {
-    // TODO: Need to calculate taxOwed before price change
-    // Currently paidThru is unchanged, need to be reset
+    collect(tokenId);
+    require(!canReclaim(tokenId), 'Must fully pay taxes first before changing price.');
+
     prices[tokenId] = newPrice;
     emit PriceUpdated(tokenId, newPrice, msg.sender);
   }

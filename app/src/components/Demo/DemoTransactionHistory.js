@@ -47,8 +47,7 @@ class DemoTransactionHistory extends Component {
     return (
       <div className="TransactionHistory">
         <Grid container spacing={5} alignItems="center" justify="center" style={{padding: '20px'}} >
-          <Text strong>Current balance: Ξ</Text>
-          <Text underline>1700</Text>
+          <h2>Total earnings: Ξ1700</h2>
           <Table dataSource={data} columns={columns} style={{width: 800, paddingTop: '10px'}}/>
         </Grid>
       </div>
