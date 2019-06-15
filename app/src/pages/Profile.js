@@ -41,7 +41,6 @@ class Profile extends Component {
                   <Paragraph editable={{onChange: this.onChange('description')}}>{this.state.description}</Paragraph>
                 </Descriptions.Item>
               </Descriptions>
-              <Collectible tokenId={297330971536412540} />
             </Grid>
           </Grid>
         </PaddedPaper>

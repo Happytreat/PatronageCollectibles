@@ -1,4 +1,4 @@
-import MyComponent from '../pages/Kitty'
+import MyComponent from '../pages/KpopPage'
 import { drizzleConnect } from 'drizzle-react'
 
 const mapStateToProps = state => ({
@@ -8,9 +8,9 @@ const mapStateToProps = state => ({
   drizzleStatus: state.drizzleStatus
 });
 
-const KittyContainer = drizzleConnect(
+const KpopContainer = drizzleConnect(
   MyComponent,
   mapStateToProps
 );
 
-export default KittyContainer;
+export default KpopContainer;

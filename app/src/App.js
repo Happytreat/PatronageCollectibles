@@ -10,7 +10,7 @@ import "./App.css";
 import drizzleOptions from "./drizzleOptions";
 import MyContainer from "./MyContainer";
 import store from './middleware'
-import KittyContainer from "./containers/KittyContainer";
+import KpopContainer from "./containers/KpopContainer";
 
 class App extends Component {
   render() {
@@ -23,7 +23,7 @@ class App extends Component {
                     <Route exact path="/" component={MyContainer} />
                     <Route exact path="/creator-admin" component={MyContainer} />
                     <Route exact path="/creators" component={MyContainer} />
-                    <Route exact path="/creators/mskitty" component={KittyContainer} />
+                    <Route exact path="/creators/kpopcoverstar" component={KpopContainer} />
                     <Route component={MyContainer} />
                 </Switch>
             </BrowserRouter>
