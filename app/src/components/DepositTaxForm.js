@@ -17,9 +17,7 @@ const translateType = type => {
   }
 };
 
-const tokenId = parseInt(parseFloat((Math.random()).toFixed(18))*Math.pow(10, 18));
-
-class MintForm extends Component {
+class SetPriceForm extends Component {
   constructor(props, context) {
     super(props);
 
@@ -33,7 +31,9 @@ class MintForm extends Component {
     const abi = this.contracts[this.props.contract].abi;
 
     this.inputs = [];
-    var initialState = {};
+    var initialState = {
+      depositAmount: 0,
+    };
 
     // Iterate over abi for correct function.
     for (var i = 0; i < abi.length; i++) {
@@ -58,7 +58,7 @@ class MintForm extends Component {
       if (input.type === "bytes32") {
         return this.utils.toHex(this.state[input.name]);
       } else if (input.name === 'tokenId') {
-        return this.utils.toHex(tokenId);
+        return this.utils.toHex(this.props.tokenId);
       }
       return this.state[input.name];
     });
@@ -69,9 +69,11 @@ class MintForm extends Component {
         ].cacheSend(...convertedInputs, this.props.sendArgs);
     }
 
+    console.log('Here');
+    console.log(this.state.depositAmount);
     return this.contracts[this.props.contract].methods[
       this.props.method
-      ].cacheSend(...convertedInputs);
+      ].cacheSend(...convertedInputs, { value: this.state.depositAmount });
   }
 
   handleInputChange(event) {
@@ -81,6 +83,13 @@ class MintForm extends Component {
         : event.target.value;
     this.setState({ [event.target.name]: value });
   }
+
+  handleDepositChange(event) {
+    const value = event.target.value;
+    console.log('handleDepositChange');
+    console.log(value);
+    this.setState({ depositAmount: value });
+  }  
 
   render() {
     if (this.props.render) {
@@ -118,9 +127,16 @@ class MintForm extends Component {
               />
             </Form.Item>
           ) : (
-              <Typography>
-                <Text>The unique id for this collectible is: {tokenId}</Text>
-              </Typography>
+            <Form.Item>
+              <Input
+                key="deposit-value"
+                type="number"
+                name="value"
+                placeholder="Deposit amount"
+                value={this.state['depositAmount']}
+                onChange={this.handleDepositChange.bind(this)}
+              />
+            </Form.Item>
           );
         })}
         <Form.Item>
@@ -129,7 +145,7 @@ class MintForm extends Component {
             type="primary"
             onClick={this.handleSubmit}
           >
-            Submit
+            Deposit Taxes
           </Button>
         </Form.Item>
       </Form>
@@ -137,11 +153,11 @@ class MintForm extends Component {
   }
 }
 
-MintForm.contextTypes = {
+SetPriceForm.contextTypes = {
   drizzle: PropTypes.object,
 };
 
-MintForm.propTypes = {
+SetPriceForm.propTypes = {
   contract: PropTypes.string.isRequired,
   method: PropTypes.string.isRequired,
   sendArgs: PropTypes.object,
@@ -159,4 +175,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default drizzleConnect(MintForm, mapStateToProps);
+export default drizzleConnect(SetPriceForm, mapStateToProps);

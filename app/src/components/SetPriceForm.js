@@ -17,9 +17,7 @@ const translateType = type => {
   }
 };
 
-const tokenId = parseInt(parseFloat((Math.random()).toFixed(18))*Math.pow(10, 18));
-
-class MintForm extends Component {
+class SetPriceForm extends Component {
   constructor(props, context) {
     super(props);
 
@@ -58,7 +56,7 @@ class MintForm extends Component {
       if (input.type === "bytes32") {
         return this.utils.toHex(this.state[input.name]);
       } else if (input.name === 'tokenId') {
-        return this.utils.toHex(tokenId);
+        return this.utils.toHex(this.props.tokenId);
       }
       return this.state[input.name];
     });
@@ -119,7 +117,7 @@ class MintForm extends Component {
             </Form.Item>
           ) : (
               <Typography>
-                <Text>The unique id for this collectible is: {tokenId}</Text>
+                <Text>Set Price</Text>
               </Typography>
           );
         })}
@@ -137,11 +135,11 @@ class MintForm extends Component {
   }
 }
 
-MintForm.contextTypes = {
+SetPriceForm.contextTypes = {
   drizzle: PropTypes.object,
 };
 
-MintForm.propTypes = {
+SetPriceForm.propTypes = {
   contract: PropTypes.string.isRequired,
   method: PropTypes.string.isRequired,
   sendArgs: PropTypes.object,
@@ -159,4 +157,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default drizzleConnect(MintForm, mapStateToProps);
+export default drizzleConnect(SetPriceForm, mapStateToProps);
