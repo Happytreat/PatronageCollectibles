@@ -7,9 +7,9 @@ import { Grid } from '@material-ui/core';
 const { Title, Text, Paragraph } = Typography;
 class Profile extends Component {
   state = {
-    name: 'Ms Kitty',
+    name: 'Kpop Cover Star',
     language: 'English',
-    description: 'I am a designer of unique Hello Kitty! Fund me for personalised designs of Hello Kitty!'
+    description: 'Kpop dancer gives personalized shout-outs and patron-only access to the previous episodes of their video series.'
   };
 
   onChange = (type) => (text) => {
