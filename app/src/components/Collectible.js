@@ -74,7 +74,7 @@ class Collectible extends Component {
               </Text>
             </Paragraph>
             <Paragraph>
-              by <a href="#">Kpop CoverStar</a>
+              by <a href="/creators/kpopcoverstar">Kpop CoverStar</a>
             </Paragraph>
             <Paragraph>
               <Tag color="gold">
@@ -84,7 +84,8 @@ class Collectible extends Component {
             <Paragraph>
               <Text>Current Price: {price} {pendingSpinner}</Text>
             </Paragraph>
-            {this.props.hideActions ? collectButton : actionForm}
+            {this.props.hideActions ? null : actionForm}
+            {this.props.hideCollect ? null : collectButton}
           </Typography>
         </Card>
       </Grid>
@@ -98,11 +99,13 @@ Collectible.contextTypes = {
 Collectible.propTypes = {
   tokenId: PropTypes.number,
   hideActions: PropTypes.bool,
+  hideCollect: PropTypes.bool,
   contracts: PropTypes.object, // eslint-disable-line
 };
 Collectible.defaultProps = {
   tokenId: null,
-  hideActions: false
+  hideActions: false,
+  hideCollect: true
 };
 
 const mapStateToProps = state => ({
