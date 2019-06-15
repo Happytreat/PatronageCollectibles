@@ -117,7 +117,7 @@ class DepositTaxForm extends Component {
             </Form.Item>
           ) : (
             <div>
-              <p><Text>Pledge to Creator</Text></p>
+              <p><Text>Send Pledge to Creator</Text></p>
               <Form.Item>
               <Input
                 key={"deposit-value"}

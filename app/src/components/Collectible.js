@@ -59,10 +59,10 @@ class Collectible extends Component {
         <div>
           <hr></hr>
           <br />
-          <SetPriceForm contract="PatronageCollectibles" method="setPrice" labels={['tokenId', 'New Price']} tokenId={this.props.tokenId}/>  
+          <SetPriceForm contract="PatronageCollectibles" method="setPrice" labels={['tokenId', 'New Price']} tokenId={this.props.tokenId}/>
           <hr></hr>
           <br />
-          <DepositTaxForm contract="PatronageCollectibles" method="deposit" labels={['tokenId']} tokenId={this.props.tokenId}/>  
+          <DepositTaxForm contract="PatronageCollectibles" method="deposit" labels={['tokenId']} tokenId={this.props.tokenId}/>
         </div>
       ) 
       : 
@@ -100,10 +100,10 @@ class Collectible extends Component {
             {this.props.hideTax ? null : (
               <div>
                 <Paragraph>
-                  <h4>Tax Balance: Ξ{taxBalance} {pendingSpinner}</h4>
+                  <h4>Pledge paid: Ξ{taxBalance} {pendingSpinner}</h4>
                 </Paragraph>
                 <Paragraph>
-                  <h4>Tax Owed: Ξ{taxOwed} {pendingSpinner}</h4>
+                  <h4>Minimum Pledge: Ξ{taxOwed} {pendingSpinner}</h4>
                 </Paragraph>
               </div>
               )}
