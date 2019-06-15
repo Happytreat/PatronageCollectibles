@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import 'react-toastify/dist/ReactToastify.css'
 
-import { Tabs } from 'antd';
+import { Tabs, PageHeader, Typography, Divider } from 'antd';
 import 'antd/dist/antd.css';
 import CreatorAdmin from './pages/CreatorAdmin';
 import Patron from './pages/Patron';
@@ -11,6 +11,7 @@ import PublicCreators from './pages/PublicCreators';
 // import withStyles from "@material-ui/core/styles/withStyles";
 
 const { TabPane } = Tabs;
+const { Text } = Typography;
 //
 // const styles = theme => ({
 //     wrapper: {section
@@ -23,16 +24,22 @@ const { TabPane } = Tabs;
 //     },
 // });
 
-function callback(key) {
-    console.log(key);
-}
+const Logo = () => (
+  <div>
+    <img src="https://robohash.org/123erf4?set=set4" alt="logo" style={{width: 60, height: 50, paddingRight: 10, display: 'inline'}}/>
+    <h4 style={{fontWeight: 700, display: 'inline'}}>Patronage Collectibles</h4>
+  </div>
+);
 
 class MyComponent extends Component {
   render() {
     //console.log(this.props);
       return (
           <div style={{padding: '10px', leftMargin: '50px', fontFamily: 'Helvetica'}}>
-              <Tabs defaultActiveKey="1" onChange={callback} tabPosition="top" tabBarGutter>
+            <PageHeader>
+              <Logo />
+              <Divider />
+              <Tabs ttdefaultActiveKey="3" tabPosition="left" tabBarGutter >
                   <TabPane tab="My Profile" key="1">
                       <Profile/>
                   </TabPane>
@@ -46,6 +53,7 @@ class MyComponent extends Component {
                       <PublicCreators />
                   </TabPane>
               </Tabs>
+            </PageHeader>
           </div>
       )
   }
