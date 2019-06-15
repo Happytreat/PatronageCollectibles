@@ -10,6 +10,9 @@ import CarouselOne from '../assets/images/bts3.png'
 import CarouselTwo from '../assets/images/bts2.jpg'
 import CarouselThree from '../assets/images/bts.jpg'
 import Display from "../assets/images/dp.png";
+import VideoOne from "../assets/images/cover1.png";
+import VideoTwo from "../assets/images/cover2.png";
+import VideoThree from "../assets/images/cover3.png";
 import {Grid} from "@material-ui/core";
 import PaddedPaper from "../atoms/PaddedPaper/PaddedPaper";
 import DemoCollectibles from "../components/Demo/DemoCollectibles";
@@ -87,6 +90,11 @@ class MyComponent extends Component {
                   <PaddedPaper>
                     <strong>About</strong>
                     <p>Kpop dancer gives personalized shout-outs and patron-only access to the previous episodes of their video series.</p>
+                    <p><strong>Recent Uploads</strong></p>
+                    <p><img src={VideoOne} alt="Video 1" style={{height: 140, width: 250}}/></p>
+                    <p><img src={VideoTwo} alt="Video 2" style={{height: 140, width: 250}}/></p>
+                    <p><img src={VideoThree} alt="Video 3" style={{height: 140, width: 250}}/></p>
+                    <p><a href='/'>Visit my Channel for more videos!</a></p>
                   </PaddedPaper>
                 </Grid>
                 <Grid item xs={6}>
@@ -124,7 +132,12 @@ class MyComponent extends Component {
                 </Grid>
             </Grid>
             <Divider />
-            <DemoCollectibles account={'0xD5F9cd0cdb7e2A390e6fB74fB04cf2399297ABC2'}/>
+            <PaddedPaper>
+              <Typography>
+                <Title level={3}>Creator's Collectibles</Title>
+              </Typography>
+              <DemoCollectibles account={'0x081d78c21EB0c4f6A051d3c0Da3DA6C240ba3b64'}/>
+            </PaddedPaper>
           </div>
         </PageHeader>
       </div>
