@@ -6,6 +6,7 @@ import {Grid} from "@material-ui/core";
 import SetPriceForm from '../components/SetPriceForm';
 import DepositTaxForm from '../components/DepositTaxForm';
 import BuyForm from '../components/BuyForm';
+import CollectTaxForm from '../components/CollectTaxForm';
 import { Button } from 'antd';
 
 const { Text, Paragraph } = Typography;
@@ -68,13 +69,7 @@ class Collectible extends Component {
     )
 
     const collectButton = (
-      <Button
-        key="submit"
-        type="primary"
-        onClick={this.handleSubmit}
-      >
-        Collect Taxes
-      </Button>
+      <CollectTaxForm contract="PatronageCollectibles" method="collect" labels={['tokenId']} tokenId={this.props.tokenId}/>  
     )
 
     return (

@@ -51,7 +51,6 @@ class CollectiblesTable extends Component {
       );
     }
 
-    const tokensOfOwner = contract.tokensOfOwner[this.tokensOfOwner].value;
     const tokensOfCreator = contract.tokensOfCreator[this.tokensOfCreator].value;
 
     const collectibles = tokensOfCreator.map(tokenId => (
