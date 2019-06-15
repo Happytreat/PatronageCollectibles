@@ -1,11 +1,11 @@
 import React from "react";
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import myCollectibles from '../assets/images/myCollectible.svg';
+import myCollectibles from '../assets/images/patronyellow.svg';
 import { PageHeader, Typography, Divider, Tabs } from 'antd';
 import PaddedPaper from "../atoms/PaddedPaper/PaddedPaper";
 import { contract } from '../const/contract';
-import CollectiblesTable from "../components/CollectiblesTable";
+import CollectiblesWallet from "../components/CollectiblesWallet";
 import MintForm from "../components/MintForm";
 
 const { Title, Paragraph, Text, Tag } = Typography;
@@ -26,7 +26,7 @@ export default ({ accounts }) => (
         <Divider />
         <Tabs defaultActiveKey="1" tabPosition="top" tabBarGutter>
           <TabPane tab="Collectibles I own" key="1" align="center">
-            <CollectiblesTable account={accounts[0]}/>
+            <CollectiblesWallet account={accounts[0]}/>
           </TabPane>
           <TabPane tab="Set collectible selling price" key="2" align="center">
             <strong>The corresponding taxes you have to pay is: </strong>
