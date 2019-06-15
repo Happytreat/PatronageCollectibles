@@ -139,6 +139,8 @@ contract PatronageCollectibles is ERC721Full {
 
   // Update token price
   function setPrice(uint tokenId, uint newPrice) public onlyOwnerOf(tokenId) {
+    // TODO: Need to calculate taxOwed before price change
+    // Currently paidThru is unchanged, need to be reset
     prices[tokenId] = newPrice;
     emit PriceUpdated(tokenId, newPrice, msg.sender);
   }
