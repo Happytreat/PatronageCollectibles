@@ -3,6 +3,7 @@ import PaddedPaper from "../atoms/PaddedPaper/PaddedPaper";
 import { Descriptions, Card, Typography } from 'antd';
 import Display from '../assets/images/dp.png';
 import { Grid } from '@material-ui/core';
+import { Collectible } from '../components';
 
 const { Title, Text, Paragraph } = Typography;
 class Profile extends Component {
@@ -40,6 +41,7 @@ class Profile extends Component {
                   <Paragraph editable={{onChange: this.onChange('description')}}>{this.state.description}</Paragraph>
                 </Descriptions.Item>
               </Descriptions>
+              <Collectible tokenId={297330971536412540} />
             </Grid>
           </Grid>
         </PaddedPaper>

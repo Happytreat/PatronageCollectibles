@@ -1,13 +1,17 @@
 import { drizzleConnect } from 'drizzle-react';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Tag, Card, Typography } from 'antd';
+import {Grid} from "@material-ui/core";
 
-class Claim extends Component {
+const { Text, Paragraph } = Typography;
+
+class Collectible extends Component {
   constructor(props, context) {
     super(props);
 
     this.contracts = context.drizzle.contracts;
-    this.dataKey = this.contracts.PatronageCollectibles.methods.tokenURI.cacheCall(this.props.tokenID);
+    this.dataKey = this.contracts.PatronageCollectibles.methods.tokenURI.cacheCall(this.props.tokenId);
   }
 
   render() {
@@ -30,25 +34,44 @@ class Claim extends Component {
     console.log(uri);
 
     return (
-      <div class="collectible">
-        Collectible component URI: {uri} {pendingSpinner}
-      </div>
+      <Grid item xs={2}>
+        <Card hoverable cover={<img alt='' src={`https://robohash.org/${this.props.tokenId}?set=set4`} />} style={{ width: 200 }}>
+          <Typography>
+            <Paragraph>
+              <Text strong>
+                Collectible Id: {this.props.tokenId}
+              </Text>
+            </Paragraph>
+            <Paragraph>
+              <Text>Creator:</Text>
+            </Paragraph>
+            <Paragraph>
+              <a href="#">Kpop CoverStar</a>
+            </Paragraph>
+            <Paragraph>
+              <Tag color="gold">
+                {uri}
+              </Tag>
+            </Paragraph>
+          </Typography>
+        </Card>
+      </Grid>
     );
   }
 }
 
-Claim.contextTypes = {
+Collectible.contextTypes = {
   drizzle: PropTypes.object,
 };
-Claim.propTypes = {
-  tokenID: PropTypes.number,
+Collectible.propTypes = {
+  tokenId: PropTypes.number,
   contracts: PropTypes.object, // eslint-disable-line
 };
-Claim.defaultProps = {
-  tokenID: null,
+Collectible.defaultProps = {
+  tokenId: null,
 };
 
 const mapStateToProps = state => ({
   contracts: state.contracts,
 });
-export default drizzleConnect(Claim, mapStateToProps);
+export default drizzleConnect(Collectible, mapStateToProps);

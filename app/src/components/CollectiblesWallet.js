@@ -1,10 +1,8 @@
 import { drizzleConnect } from 'drizzle-react';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Tag, Card, Typography } from 'antd';
-import {Grid} from "@material-ui/core";
-
-const { Text, Paragraph } = Typography;
+import { Grid } from "@material-ui/core";
+import { Collectible } from '../components';
 
 class CollectiblesWallet extends Component {
   constructor(props, context) {
@@ -12,7 +10,6 @@ class CollectiblesWallet extends Component {
 
     this.contracts = context.drizzle.contracts;
     this.tokensOfOwner = this.contracts.PatronageCollectibles.methods.tokensOfOwner.cacheCall(this.props.account);
-    // this.dataKey = this.contracts.PatronageCollectibles.methods.tokenURI.cacheCall(this.props.tokenID);
   }
 
   render() {
@@ -27,37 +24,10 @@ class CollectiblesWallet extends Component {
       );
     }
 
-    // Show a loading spinner for future updates.
-    const pendingSpinner = contract.synced ? '' : ' 🔄';
-
-    // TODO: have Solidity struct with more data
-    // const uri = contract.tokenURI[this.dataKey].value;
     const tokensOfOwner = contract.tokensOfOwner[this.tokensOfOwner].value;
-
     const collectibles = tokensOfOwner.map(tokenId => {
       return (
-        <Grid item xs={2}>
-          <Card hoverable cover={<img alt='' src={`https://robohash.org/${tokenId}?set=set4`} />} style={{ width: 200 }}>
-            <Typography>
-              <Paragraph>
-                <Text strong>
-                  Collectible Id: {tokenId}
-                </Text>
-              </Paragraph>
-              <Paragraph>
-                <Text>Creator:</Text>
-              </Paragraph>
-              <Paragraph>
-                <a href="#">Kpop CoverStar</a>
-              </Paragraph>
-              <Paragraph>
-                <Tag color="gold">
-                  gold
-                </Tag>
-              </Paragraph>
-            </Typography>
-          </Card>
-        </Grid>
+        <Collectible tokenId={tokenId} />
       )
     });
 

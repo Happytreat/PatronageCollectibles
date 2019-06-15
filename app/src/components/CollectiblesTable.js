@@ -35,7 +35,6 @@ class CollectiblesTable extends Component {
     this.contracts = context.drizzle.contracts;
     this.tokensOfCreator = this.contracts.PatronageCollectibles.methods.tokensOfCreator.cacheCall(this.props.account);
     this.tokensOfOwner = this.contracts.PatronageCollectibles.methods.tokensOfOwner.cacheCall(this.props.account);
-    // this.dataKey = this.contracts.PatronageCollectibles.methods.tokenURI.cacheCall(this.props.tokenID);
   }
 
   render() {
@@ -50,28 +49,8 @@ class CollectiblesTable extends Component {
       );
     }
 
-    // Show a loading spinner for future updates.
-    const pendingSpinner = contract.synced ? '' : ' 🔄';
-
-    // TODO: have Solidity struct with more data
-    // const uri = contract.tokenURI[this.dataKey].value;
     const tokensOfOwner = contract.tokensOfOwner[this.tokensOfOwner].value;
     const tokensOfCreator = contract.tokensOfCreator[this.tokensOfCreator].value;
-    // const ownerOfTokensKeys = tokensOfCreator.map(tokenId => {
-    //   return {
-    //     key: this.contracts.PatronageCollectibles.methods.ownerOf.cacheCall(tokenId),
-    //     id: tokenId,
-    //   };
-    // });
-    // console.log("ownerOfTokensKeys", ownerOfTokensKeys);
-    // console.log("Contract", contract);
-    // const ownerOfTokens = ownerOfTokensKeys.map(o => {
-    //   return {
-    //     owner: contract.ownerOf[o.key].value,
-    //     id: o.id,
-    //   };
-    // });
-    // console.log("ownerOfTokens", ownerOfTokens);
 
     const data = tokensOfCreator.map(token => {
       return {

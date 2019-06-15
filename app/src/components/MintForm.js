@@ -1,7 +1,7 @@
 import { drizzleConnect } from "drizzle-react";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Form, Icon, Input, Button, Typography } from 'antd';
+import { Form, Input, Button, Typography } from 'antd';
 import 'antd/dist/antd.css';
 
 const translateType = type => {
