@@ -8,7 +8,7 @@ contract PatronageCollectibles is ERC721Full {
   event Deposited(uint indexed tokenId, uint value, address from);
   event PriceUpdated(uint indexed tokenId, uint newPrice, address from);
   event Collected(uint indexed tokenId, uint taxAmount, address from);
-  event Bought(uint indexed tokenId, uint latestPrice, address from);
+  event Bought(uint indexed tokenId, uint paidAmount, uint latestPrice, address from);
   event Reclaimed(uint indexed tokenId, address from);
 
   uint32 private constant TAX_DENOMINATOR = 1000000;
@@ -63,7 +63,7 @@ contract PatronageCollectibles is ERC721Full {
   }
 
   // Buys a Collectible
-  function buy(uint tokenId) public payable { // TODO: must be nonreentrant
+  function buy(uint tokenId, uint newPrice) public payable { // TODO: must be nonreentrant
     uint paidAmount = msg.value;
     
     collect(tokenId); // Collect taxes
@@ -79,13 +79,13 @@ contract PatronageCollectibles is ERC721Full {
     // Change owner
     address newOwner = msg.sender;
     uint excessPaidAmount = paidAmount - latestPrice; // TODO: use SafeMath.sub()
-    prices[tokenId] = 0;
     taxes[tokenId] = excessPaidAmount; // Excess paid is deposited as taxes
     paidThru[tokenId] = now;
-    _changeOwner(tokenId, previousOwner, newOwner); // Unowned
+    _changeOwner(tokenId, previousOwner, newOwner);
+    prices[tokenId] = newPrice;
 
     uint refund = excessTaxes + latestPrice; // TODO: SafeMath
-    emit Bought(tokenId, latestPrice, newOwner);
+    emit Bought(tokenId, paidAmount, latestPrice, newOwner);
     previousOwner.transfer(refund); // Transfer remaining taxes + profit to previous owner
   }
 
