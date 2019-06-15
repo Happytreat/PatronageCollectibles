@@ -132,7 +132,7 @@ class MintForm extends Component {
             type="primary"
             onClick={this.handleSubmit}
           >
-            Mint Collectible
+            Create
           </Button>
         </Form.Item>
       </Form>

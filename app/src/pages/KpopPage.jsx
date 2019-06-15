@@ -129,6 +129,14 @@ class MyComponent extends Component {
                       )}
                     />
                   </PaddedPaper>
+
+                  <PaddedPaper>
+                    <img 
+                      width={640}
+                      src="https://i.imgur.com/B9mbi98.png" 
+                    />
+                    <a href="#"><p style={{ 'text-align': 'center' }}>See more posts</p></a>
+                  </PaddedPaper>
                 </Grid>
             </Grid>
             <Divider />

@@ -8,11 +8,16 @@ const { Text } = Typography;
 
 const columns = [
   {
-    title: 'Token ID',
+    title: 'Collectible ID',
     dataIndex: 'tokenId',
     key: 'tokenId',
     render: text => <a href="javascript:;">{text}</a>,
   },
+  {
+    title: 'Tier',
+    dataIndex: 'tier',
+    key: 'tier',
+  },  
   {
     title: 'Sent by',
     dataIndex: 'address',
@@ -27,17 +32,20 @@ const columns = [
 
 const data = [{
   tokenId: '#440723636211504800',
-  address: '0x081d78c21EB0c4f6A051d3c0Da3DA6C240ba3b64',
+  tier: 'gold',
+  address: 'mel.patronage.eth',
   amount: 'Ξ200'
   },
   {
     tokenId: '#690182961454529800',
-    address: '0x081d78c21EB0c4f6A051d3c0Da3DA6C240ba3b64',
+    tier: 'bronze',
+    address: 'yos.patronage.eth',
     amount: 'Ξ300'
   },
   {
     tokenId: '#720025927993815000',
-    address: '0x081d78c21EB0c4f6A051d3c0Da3DA6C240ba3b64',
+    tier: 'gold',
+    address: 'yos.patronage.eth',
     amount: 'Ξ1200'
   }
 ];

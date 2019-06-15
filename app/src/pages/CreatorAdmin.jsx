@@ -25,8 +25,8 @@ export default ({ accounts }) => (
                 <TabPane tab="Collectibles I minted" key="1" align="center">
                   <CollectiblesTable account={accounts[0]}/>
                 </TabPane>
-                <TabPane tab="Mint Collectibles" key="2" align="center">
-                  <strong>Mint a new collectible: </strong>
+                <TabPane tab="Create New Collectible" key="2" align="center">
+                  <strong>Create New Collectible: </strong>
 
                   <br />
                   <br />
