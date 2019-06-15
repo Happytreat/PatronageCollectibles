@@ -9,7 +9,7 @@ const contractEventNotifier = store => next => action => {
     // const message = JSON.stringify(action.event.returnValues);
     const display = `${contract}(${contractEvent})`
 
-    toast.success(display, { position: toast.POSITION.TOP_RIGHT })
+    // toast.success(display, { position: toast.POSITION.TOP_RIGHT })
   }
   return next(action)
 };
