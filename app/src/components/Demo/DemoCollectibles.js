@@ -2,8 +2,8 @@ import { drizzleConnect } from 'drizzle-react';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tag } from 'antd';
-import { Grid } from "@material-ui/core";
-import { Collectible } from '../components';
+import { Grid } from "@material-ui/core/index";
+import { Collectible } from '../index';
 
 const columns = [
   {

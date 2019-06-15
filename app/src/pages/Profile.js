@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import PaddedPaper from "../atoms/PaddedPaper/PaddedPaper";
 import { Descriptions, Card, Typography } from 'antd';
 import Display from '../assets/images/dp.png';
 import { Grid } from '@material-ui/core';
