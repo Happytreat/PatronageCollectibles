@@ -75,6 +75,7 @@ class Collectible extends Component {
       <CollectTaxForm contract="PatronageCollectibles" method="collect" labels={['tokenId']} tokenId={this.props.tokenId}/>  
     )
 
+    // const height = this.props.changeHeight ? 500 : 900;
     return (
       <Grid item xs={2}>
         <Card hoverable cover={<img alt='' src={`https://robohash.org/${this.props.tokenId}?set=set4`} />} style={{ height: 900, width: 200 }}>
@@ -123,12 +124,16 @@ Collectible.propTypes = {
   hideActions: PropTypes.bool,
   hideCollect: PropTypes.bool,
   contracts: PropTypes.object, // eslint-disable-line
+  hideTax: PropTypes.bool,
+  changeHeight: PropTypes.bool,
 };
 Collectible.defaultProps = {
   tokenId: null,
   hideActions: false,
   hideCollect: true,
-  hideOwner: false
+  hideOwner: false,
+  hideTax: false,
+  changeHeight: false,
 };
 
 const mapStateToProps = state => ({

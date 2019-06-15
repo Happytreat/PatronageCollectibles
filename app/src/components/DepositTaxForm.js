@@ -137,7 +137,7 @@ class DepositTaxForm extends Component {
             type="primary"
             onClick={this.handleSubmit}
           >
-            Deposit Tax
+            Send Pledge
           </Button>
         </Form.Item>
       </Form>
