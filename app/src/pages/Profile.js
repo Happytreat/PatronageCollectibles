@@ -3,7 +3,6 @@ import PaddedPaper from "../atoms/PaddedPaper/PaddedPaper";
 import { Descriptions, Card, Typography } from 'antd';
 import Display from '../assets/images/dp.png';
 import { Grid } from '@material-ui/core';
-import { Collectible } from '../components';
 
 const { Title, Text, Paragraph } = Typography;
 class Profile extends Component {
@@ -20,7 +19,6 @@ class Profile extends Component {
   render() {
     return (
       <div>
-        <PaddedPaper>
           <Grid container spacing={2} style={{padding: '20px'}}>
             <Grid item xs={3}>
               <Card cover={<img src={Display} alt="Display Pic" style={{borderRadius: 30, height: 300, width: 300}}/>}
@@ -43,7 +41,6 @@ class Profile extends Component {
               </Descriptions>
             </Grid>
           </Grid>
-        </PaddedPaper>
       </div>
     )
   }

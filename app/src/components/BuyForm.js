@@ -17,7 +17,7 @@ const translateType = type => {
   }
 };
 
-class SetPriceForm extends Component {
+class BuyForm extends Component {
   constructor(props, context) {
     super(props);
 
@@ -31,9 +31,7 @@ class SetPriceForm extends Component {
     const abi = this.contracts[this.props.contract].abi;
 
     this.inputs = [];
-    var initialState = {
-      depositAmount: 0,
-    };
+    var initialState = {};
 
     // Iterate over abi for correct function.
     for (var i = 0; i < abi.length; i++) {
@@ -69,11 +67,9 @@ class SetPriceForm extends Component {
         ].cacheSend(...convertedInputs, this.props.sendArgs);
     }
 
-    console.log('Here');
-    console.log(this.state.depositAmount);
     return this.contracts[this.props.contract].methods[
       this.props.method
-      ].cacheSend(...convertedInputs, { value: this.state.depositAmount });
+      ].cacheSend(...convertedInputs);
   }
 
   handleInputChange(event) {
@@ -83,13 +79,6 @@ class SetPriceForm extends Component {
         : event.target.value;
     this.setState({ [event.target.name]: value });
   }
-
-  handleDepositChange(event) {
-    const value = event.target.value;
-    console.log('handleDepositChange');
-    console.log(value);
-    this.setState({ depositAmount: value });
-  }  
 
   render() {
     if (this.props.render) {
@@ -102,7 +91,7 @@ class SetPriceForm extends Component {
       });
     }
 
-    const { Title, Paragraph, Text } = Typography;
+    const { Text } = Typography;
 
     return (
       <Form
@@ -127,16 +116,7 @@ class SetPriceForm extends Component {
               />
             </Form.Item>
           ) : (
-            <Form.Item>
-              <Input
-                key="deposit-value"
-                type="number"
-                name="value"
-                placeholder="Deposit amount"
-                value={this.state['depositAmount']}
-                onChange={this.handleDepositChange.bind(this)}
-              />
-            </Form.Item>
+            <Text>Buy and Set Price</Text>
           );
         })}
         <Form.Item>
@@ -145,7 +125,7 @@ class SetPriceForm extends Component {
             type="primary"
             onClick={this.handleSubmit}
           >
-            Deposit Taxes
+            Buy
           </Button>
         </Form.Item>
       </Form>
@@ -153,11 +133,11 @@ class SetPriceForm extends Component {
   }
 }
 
-SetPriceForm.contextTypes = {
+BuyForm.contextTypes = {
   drizzle: PropTypes.object,
 };
 
-SetPriceForm.propTypes = {
+BuyForm.propTypes = {
   contract: PropTypes.string.isRequired,
   method: PropTypes.string.isRequired,
   sendArgs: PropTypes.object,
@@ -175,4 +155,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default drizzleConnect(SetPriceForm, mapStateToProps);
+export default drizzleConnect(BuyForm, mapStateToProps);

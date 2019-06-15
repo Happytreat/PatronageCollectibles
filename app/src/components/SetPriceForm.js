@@ -91,7 +91,7 @@ class SetPriceForm extends Component {
       });
     }
 
-    const { Title, Paragraph, Text } = Typography;
+    const { Text } = Typography;
 
     return (
       <Form
@@ -116,9 +116,7 @@ class SetPriceForm extends Component {
               />
             </Form.Item>
           ) : (
-              <Typography>
-                <Text>Set Price</Text>
-              </Typography>
+            <Text>Change Price</Text>
           );
         })}
         <Form.Item>

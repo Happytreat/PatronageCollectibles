@@ -1,7 +1,9 @@
 import { drizzleConnect } from 'drizzle-react';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Tag, Table } from 'antd';
+import { Tag } from 'antd';
+import { Grid } from "@material-ui/core";
+import { Collectible } from '../components';
 
 const columns = [
   {
@@ -52,17 +54,15 @@ class CollectiblesTable extends Component {
     const tokensOfOwner = contract.tokensOfOwner[this.tokensOfOwner].value;
     const tokensOfCreator = contract.tokensOfCreator[this.tokensOfCreator].value;
 
-    const data = tokensOfCreator.map(token => {
-      return {
-        id: token,
-        sold: tokensOfOwner.includes(token) ? 'Not sold' : 'Sold',
-        tiers: 'super',
-      }
-    });
+    const collectibles = tokensOfCreator.map(tokenId => (
+      <Collectible tokenId={tokenId} hideActions={true} />
+    ))
 
     return (
       <div className="collectible">
-        <Table columns={columns} dataSource={data} style={{width: '1200px', marginLeft: '15%'}}/>
+        <Grid container spacing={5} alignItems="center" style={{padding: '20px'}} >
+          {collectibles}
+        </Grid>
       </div>
     );
   }

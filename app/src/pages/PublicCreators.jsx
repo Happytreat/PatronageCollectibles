@@ -23,8 +23,7 @@ const styles = {
 
 export default () => (
   <div>
-    <div className="App" style={{backgroundColor: '#0667d0', width: '95%'}}>
-      <PaddedPaper>
+    <div className="App">
         <Typography>
           <img src={Patron} alt="Explore creators" style={{ height: '400px', width: '400px' }}/>
           <Title>Creator Marketplace</Title>
@@ -84,7 +83,6 @@ export default () => (
             </Card>
           </Grid>
         </Grid>
-      </PaddedPaper>
     </div>
   </div>
 );

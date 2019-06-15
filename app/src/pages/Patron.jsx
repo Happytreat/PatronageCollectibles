@@ -13,31 +13,16 @@ const { TabPane } = Tabs;
 
 export default ({ accounts }) => (
   <div>
-    <div className="App" style={{backgroundColor: '#0667d0', width: '95%'}}>
+    <div className="App">
       <ToastContainer />
-      <PaddedPaper>
-        <img src={myCollectibles} alt="My Collectibles" style={{ height: '400px', width: '400px' }}/>
-        <Typography>
-          <Title>My Collectible Wallet</Title>
-          <Paragraph>View and configure the unique collectibles you own.</Paragraph>
-        </Typography>
+      <img src={myCollectibles} alt="My Collectibles" style={{ height: '400px', width: '400px' }}/>
+      <Typography>
+        <Title>My Collectible Wallet</Title>
+        <Paragraph>View and configure the unique collectibles you own.</Paragraph>
+      </Typography>
 
-        <Divider />
-        <Tabs defaultActiveKey="1" tabPosition="top" tabBarGutter>
-          <TabPane tab="Collectibles I own" key="1" align="center">
-            <CollectiblesWallet account={accounts[0]}/>
-          </TabPane>
-          <TabPane tab="Set collectible selling price" key="2" align="center">
-            <strong>The corresponding taxes you have to pay is: </strong>
-
-            <br />
-            <br />
-            <div style={{width: '600px', margin: 'auto', paddingTop: '5px'}}>
-              <MintForm contract={contract} method="mint" />
-            </div>
-          </TabPane>
-        </Tabs>
-      </PaddedPaper>
+      <Divider />
+      <CollectiblesWallet account={accounts[0]}/>
     </div>
   </div>
 );
