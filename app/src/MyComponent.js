@@ -46,7 +46,7 @@ class MyComponent extends Component {
               <Divider />
               <Tabs ttdefaultActiveKey="3" tabPosition="left" tabBarGutter >
                   <TabPane tab="My Profile" key="1">
-                      <Profile/>
+                      <Profile accounts={this.props.accounts}/>
                   </TabPane>
                   <TabPane tab="Creator Dashboard" key="2">
                       <CreatorAdmin accounts={this.props.accounts}/>

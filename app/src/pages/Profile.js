@@ -28,7 +28,7 @@ class Profile extends Component {
             <Grid item xs={8}>
               <Descriptions title="My Profile" bordered column={1}>
                 <Descriptions.Item label="My Wallet Address:">
-                  <Text copyable>1223ghjynv23hjjnvt239hnds9asc</Text>
+                  <Text copyable>{this.props.accounts[0]}</Text>
                 </Descriptions.Item>
                 <Descriptions.Item label="Public Display Name">
                   <Text editable={{onChange: this.onChange('name')}}>{this.state.name}</Text>
