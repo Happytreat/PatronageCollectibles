@@ -45,15 +45,16 @@ class Collectible extends Component {
       4: canReclaim
     } = contract.info[this.dataKey].value;
 
+    const isOwner = this.props.accounts[0] === owner;
     const taxOwed = contract.taxOwed[this.taxOwedKey].value;
 
     const ownerInfo = (
       <Paragraph style={{'word-wrap': 'break-word'}}>
-        Owner: {owner}
+        Owner: {isOwner ? <strong>You!</strong> : owner}
       </Paragraph>
     );
 
-    const actionForm = (this.props.accounts[0] === owner ? 
+    const actionForm = (isOwner ? 
       (
         <div>
           <hr></hr>
@@ -84,20 +85,20 @@ class Collectible extends Component {
             <Paragraph>
               by <a href="/creators/kpopcoverstar">Kpop CoverStar</a>
             </Paragraph>
-            {this.props.hideOwner ? null : ownerInfo}
             <Paragraph>
-              <Tag color="gold">
+              <Tag style={{ fontSize: '1.2em' }} color="gold">
                 {uri}
               </Tag>
             </Paragraph>  
+            {this.props.hideOwner ? null : ownerInfo}
             <Paragraph>
-              <h4>Price: Ξ{price} {pendingSpinner}</h4>
+              <h3>Price: Ξ{price} {pendingSpinner}</h3>
             </Paragraph>
             <Paragraph>
-              <h5>Tax Balance: Ξ{taxBalance} {pendingSpinner}</h5>
+              <h4>Tax Balance: Ξ{taxBalance} {pendingSpinner}</h4>
             </Paragraph>
             <Paragraph>
-              <h5>Tax Owed: Ξ{taxOwed} {pendingSpinner}</h5>
+              <h4>Tax Owed: Ξ{taxOwed} {pendingSpinner}</h4>
             </Paragraph>
             {this.props.hideActions ? null : actionForm}
             {this.props.hideCollect ? null : collectButton}
