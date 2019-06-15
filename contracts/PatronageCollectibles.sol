@@ -9,6 +9,7 @@ contract PatronageCollectibles is ERC721Full {
   event PriceUpdated(uint indexed tokenId, uint newPrice, address from);
   event Collected(uint indexed tokenId, uint taxAmount, address from);
   event Bought(uint indexed tokenId, uint paidAmount, uint latestPrice, address from);
+  event Refunded(uint indexed tokenId, uint refund, address to);
   event Reclaimed(uint indexed tokenId, address from);
 
   uint32 private constant TAX_DENOMINATOR = 1000000;
@@ -72,8 +73,9 @@ contract PatronageCollectibles is ERC721Full {
     uint latestPrice = prices[tokenId];
     require(paidAmount >= latestPrice, 'Insufficient amount paid.');
 
-    address payable previousOwner = address(uint160(_tokenOwner[tokenId]));
+    address previousOwner = _tokenOwner[tokenId];
     require(msg.sender != previousOwner, 'You are already the owner.');
+    address payable beneficiary = address(uint160(previousOwner));
     uint excessTaxes = taxes[tokenId]; // Refund excess taxes to previous owner
 
     // Change owner
@@ -83,10 +85,13 @@ contract PatronageCollectibles is ERC721Full {
     paidThru[tokenId] = now;
     _changeOwner(tokenId, previousOwner, newOwner);
     prices[tokenId] = newPrice;
+    emit Bought(tokenId, paidAmount, latestPrice, newOwner);
 
     uint refund = excessTaxes + latestPrice; // TODO: SafeMath
-    emit Bought(tokenId, paidAmount, latestPrice, newOwner);
-    previousOwner.transfer(refund); // Transfer remaining taxes + profit to previous owner
+    emit Refunded(tokenId, refund, beneficiary);
+
+    // TOFIX
+    // beneficiary.transfer(refund); // Transfer remaining taxes + profit to previous owner
   }
 
   // Collect taxes
@@ -152,6 +157,16 @@ contract PatronageCollectibles is ERC721Full {
 
   function tokensOfOwner(address owner) public view returns (uint[] memory) {
       return _tokensOfOwner(owner);
+  }
+
+  function info(uint tokenId) public view returns (address, address, uint, uint, bool) {
+    address creator = creatorOf(tokenId);
+    address owner = ownerOf(tokenId);
+    uint taxBalance = taxes[tokenId];
+    uint price = prices[tokenId];
+    bool canReclaim = canReclaim(tokenId);
+  
+    return (creator, owner, taxBalance, price, canReclaim);
   }
 
   /**
