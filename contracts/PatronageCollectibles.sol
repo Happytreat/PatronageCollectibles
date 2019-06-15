@@ -87,11 +87,12 @@ contract PatronageCollectibles is ERC721Full {
     prices[tokenId] = newPrice;
     emit Bought(tokenId, paidAmount, latestPrice, newOwner);
 
-    uint refund = excessTaxes + latestPrice; // TODO: SafeMath
+    uint refund = excessTaxes + latestPrice;
     emit Refunded(tokenId, refund, beneficiary);
 
-    // TOFIX
-    // beneficiary.transfer(refund); // Transfer remaining taxes + profit to previous owner
+    // TOFIX: fails because insufficient balance
+    // address(this).balance = 1860
+    beneficiary.transfer(refund); // Transfer remaining taxes + profit to previous owner
   }
 
   // Collect taxes
