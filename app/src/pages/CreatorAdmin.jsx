@@ -13,7 +13,6 @@ const { TabPane } = Tabs;
 
 export default ({ accounts }) => (
     <div>
-        <PageHeader onBack={() => null} title="Manage your creator settings" style={{ padding: '10px', leftMargin: '50px', color: '#0667d0' }} />
         <div className="App" style={{backgroundColor: '#0667d0', width: '95%'}}>
             <ToastContainer />
             <PaddedPaper>

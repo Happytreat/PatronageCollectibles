@@ -33,7 +33,7 @@ class CollectiblesWallet extends Component {
 
     return (
       <div className="collectible">
-        <Grid container spacing={5} justify="space-between" alignItems="center" style={{padding: '20px'}} >
+        <Grid container spacing={5} alignItems="center" style={{padding: '20px'}} >
           {collectibles}
         </Grid>
       </div>

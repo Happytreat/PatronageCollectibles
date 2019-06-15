@@ -73,8 +73,7 @@ class Collectible extends Component {
             <Paragraph>
               <Text>Current Price: {price} {pendingSpinner}</Text>
             </Paragraph>
-            <hr></hr>
-            {actionForm}
+            {this.props.hideActions ? null : actionForm}
           </Typography>
         </Card>
       </Grid>
@@ -87,10 +86,12 @@ Collectible.contextTypes = {
 };
 Collectible.propTypes = {
   tokenId: PropTypes.number,
+  hideActions: PropTypes.bool,
   contracts: PropTypes.object, // eslint-disable-line
 };
 Collectible.defaultProps = {
   tokenId: null,
+  hideActions: false
 };
 
 const mapStateToProps = state => ({

@@ -13,7 +13,6 @@ const { TabPane } = Tabs;
 
 export default ({ accounts }) => (
   <div>
-    <PageHeader onBack={() => null} title="View your collectibles here" style={{ padding: '10px', leftMargin: '50px', color: '#0667d0' }} />
     <div className="App" style={{backgroundColor: '#0667d0', width: '95%'}}>
       <ToastContainer />
       <PaddedPaper>
@@ -24,20 +23,7 @@ export default ({ accounts }) => (
         </Typography>
 
         <Divider />
-        <Tabs defaultActiveKey="1" tabPosition="top" tabBarGutter>
-          <TabPane tab="Collectibles I own" key="1" align="center">
-            <CollectiblesWallet account={accounts[0]}/>
-          </TabPane>
-          <TabPane tab="Set collectible selling price" key="2" align="center">
-            <strong>The corresponding taxes you have to pay is: </strong>
-
-            <br />
-            <br />
-            <div style={{width: '600px', margin: 'auto', paddingTop: '5px'}}>
-              <MintForm contract={contract} method="mint" />
-            </div>
-          </TabPane>
-        </Tabs>
+        <CollectiblesWallet account={accounts[0]}/>
       </PaddedPaper>
     </div>
   </div>
