@@ -146,7 +146,7 @@ class MyComponent extends Component {
               <Typography>
                 <Title level={3}>Creator's Collectibles</Title>
               </Typography>
-              <DemoCollectibles account={'0x081d78c21EB0c4f6A051d3c0Da3DA6C240ba3b64'}/>
+              <DemoCollectibles account={'0xD5F9cd0cdb7e2A390e6fB74fB04cf2399297ABC2'}/>
             </PaddedPaper>
           </div>
         </PageHeader>

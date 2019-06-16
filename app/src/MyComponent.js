@@ -34,8 +34,8 @@ class MyComponent extends Component {
               <Logo />
               <Divider />
               <Tabs defaultActiveKey="1" tabPosition="left" tabBarGutter >
-                  <TabPane tab="My Profile" key="1">
-                      <Profile accounts={this.props.accounts}/>
+                  <TabPane tab="Explore Creators" key="1">
+                      <PublicCreators />
                   </TabPane>
                   <TabPane tab="Creator Dashboard" key="2">
                       <CreatorAdmin accounts={this.props.accounts}/>
@@ -43,8 +43,8 @@ class MyComponent extends Component {
                   <TabPane tab="My Collectibles" key="3">
                     <Patron accounts={this.props.accounts}/>
                   </TabPane>
-                  <TabPane tab="Explore Creators" key="4">
-                      <PublicCreators />
+                  <TabPane tab="Profile Settings" key="4">
+                      <Profile accounts={this.props.accounts}/>
                   </TabPane>
               </Tabs>
             </PageHeader>
