@@ -97,7 +97,11 @@ class Collectible extends Component {
             <Paragraph>
               <h3>Price: Ξ{price} {pendingSpinner}</h3>
             </Paragraph>
-            {this.props.hideTax ? null : (
+            {this.props.hideTax ? (
+              <Paragraph>
+                  <h4>Pledge Available: Ξ{taxOwed} {pendingSpinner}</h4>
+                </Paragraph>
+            ) : (
               <div>
                 <Paragraph>
                   <h4>Pledge paid: Ξ{taxBalance} {pendingSpinner}</h4>
