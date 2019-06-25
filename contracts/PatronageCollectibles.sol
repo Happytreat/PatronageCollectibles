@@ -106,6 +106,8 @@ contract PatronageCollectibles is ERC721Full {
 
     if (owed > paid) { // insufficient tax deposited
       taxes[tokenId] = 0;
+      // Represent amount of taxes paid as a time
+      // As each tax payment corresponds to tax time interval
       paidThru[tokenId] += (now - paidThru[tokenId]) * paid / owed;
       emit Collected(tokenId, paid, msg.sender);
       beneficiary.transfer(paid);
@@ -152,8 +154,8 @@ contract PatronageCollectibles is ERC721Full {
   function taxOwed(uint tokenId) public view returns (uint) {
     uint tokenPrice = prices[tokenId];
 
-    return tokenPrice * (now - paidThru[tokenId]) * TAX_NUMERATOR
-        / TAX_DENOMINATOR / TAX_INTERVAL;
+    return tokenPrice * TAX_NUMERATOR / TAX_DENOMINATOR
+    * (now - paidThru[tokenId])  / TAX_INTERVAL;
   }
 
   function exists(uint tokenId) public view returns (bool) {
