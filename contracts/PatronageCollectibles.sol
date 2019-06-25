@@ -48,6 +48,9 @@ contract PatronageCollectibles is ERC721Full {
   function mint(uint tokenId, string memory tokenURI) public returns (bool) {
       address creator = msg.sender;
 
+      _mint(creator, tokenId); // Initially, the creator owns the token but is 'in recovery'
+      _setTokenURI(tokenId, tokenURI); //tokenURI is the Tier
+
       _createdTokens[creator].push(tokenId); // Track a Creator's tokens
       _tokenCreator[tokenId] = creator;
 
@@ -56,15 +59,12 @@ contract PatronageCollectibles is ERC721Full {
       taxes[tokenId] = 0;
       paidThru[tokenId] = now;
 
-      _mint(creator, tokenId); // Initially, the creator owns the token but is 'in recovery'
-      _setTokenURI(tokenId, tokenURI);
-
       emit Minted(tokenId, creator);
       return true;
   }
 
   // Buys a Collectible
-  function buy(uint tokenId, uint newPrice) public payable { // TODO: must be nonreentrant
+  function buy(uint tokenId, uint newPrice) public payable { // TODO: must be non-reentrant
     uint paidAmount = msg.value;
 
     collect(tokenId); // Collect taxes
