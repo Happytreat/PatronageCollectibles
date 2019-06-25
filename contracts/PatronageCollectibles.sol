@@ -14,7 +14,7 @@ contract PatronageCollectibles is ERC721Full {
 
   uint32 private constant TAX_DENOMINATOR = 1000000;
   uint32 private constant TAX_NUMERATOR = 10000; // 1%, make configurable
-  uint32 private constant TAX_INTERVAL = 1 hours;
+  uint32 private constant TAX_INTERVAL = 1 minutes;
 
   // Mapping from creator to list of token IDs
   mapping(address => uint[]) private _createdTokens;
@@ -48,6 +48,9 @@ contract PatronageCollectibles is ERC721Full {
   function mint(uint tokenId, string memory tokenURI) public returns (bool) {
       address creator = msg.sender;
 
+      _mint(creator, tokenId); // Initially, the creator owns the token but is 'in recovery'
+      _setTokenURI(tokenId, tokenURI); //tokenURI is the Tier
+
       _createdTokens[creator].push(tokenId); // Track a Creator's tokens
       _tokenCreator[tokenId] = creator;
 
@@ -56,15 +59,12 @@ contract PatronageCollectibles is ERC721Full {
       taxes[tokenId] = 0;
       paidThru[tokenId] = now;
 
-      _mint(creator, tokenId); // Initially, the creator owns the token but is 'in recovery'
-      _setTokenURI(tokenId, tokenURI);
-
       emit Minted(tokenId, creator);
       return true;
   }
 
   // Buys a Collectible
-  function buy(uint tokenId, uint newPrice) public payable { // TODO: must be nonreentrant
+  function buy(uint tokenId, uint newPrice) public payable { // TODO: must be non-reentrant
     uint paidAmount = msg.value;
 
     collect(tokenId); // Collect taxes
@@ -84,6 +84,8 @@ contract PatronageCollectibles is ERC721Full {
     taxes[tokenId] = excessPaidAmount; // Excess paid is deposited as taxes
     paidThru[tokenId] = now;
     _changeOwner(tokenId, previousOwner, newOwner);
+
+    // Interchangeable newPrice and paidAmount
     prices[tokenId] = newPrice;
     emit Bought(tokenId, paidAmount, latestPrice, newOwner);
 
@@ -100,13 +102,15 @@ contract PatronageCollectibles is ERC721Full {
   function collect(uint tokenId) public {
     uint owed = taxOwed(tokenId);
     address payable beneficiary = address(uint160(creatorOf(tokenId)));
-    uint balance = taxes[tokenId];
+    uint paid = taxes[tokenId];
 
-    if (owed > balance) { // insufficient tax deposited
-      taxes[tokenId] -= balance;
-      paidThru[tokenId] += (now - paidThru[tokenId]) * balance / owed;
-      emit Collected(tokenId, balance, msg.sender);
-      beneficiary.transfer(balance);
+    if (owed > paid) { // insufficient tax deposited
+      taxes[tokenId] = 0;
+      // Represent amount of taxes paid as a time
+      // As each tax payment corresponds to tax time interval
+      paidThru[tokenId] += (now - paidThru[tokenId]) * paid / owed;
+      emit Collected(tokenId, paid, msg.sender);
+      beneficiary.transfer(paid);
     } else { // enough tax deposited
       taxes[tokenId] -= owed;
       paidThru[tokenId] = now;
@@ -150,8 +154,8 @@ contract PatronageCollectibles is ERC721Full {
   function taxOwed(uint tokenId) public view returns (uint) {
     uint tokenPrice = prices[tokenId];
 
-    return tokenPrice * (now - paidThru[tokenId]) * TAX_NUMERATOR
-        / TAX_DENOMINATOR / TAX_INTERVAL;
+    return tokenPrice * TAX_NUMERATOR / TAX_DENOMINATOR
+    * (now - paidThru[tokenId])  / TAX_INTERVAL;
   }
 
   function exists(uint tokenId) public view returns (bool) {
