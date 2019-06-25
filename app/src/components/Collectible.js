@@ -67,7 +67,7 @@ class Collectible extends Component {
       ) 
       : 
       (
-        <BuyForm contract="PatronageCollectibles" method="buy" labels={['tokenId', 'NewPrice']} tokenId={this.props.tokenId} sendArgs={{ value: price }}/>
+        <BuyForm contract="PatronageCollectibles" method="buy" labels={['tokenId', 'NewPrice']} tokenId={this.props.tokenId} />
       )
     )
 
